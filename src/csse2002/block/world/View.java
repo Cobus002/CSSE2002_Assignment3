@@ -5,14 +5,22 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+
 
 /**
  * The View class for the Canvas Example
@@ -44,6 +52,9 @@ public class View {
     //Specific index of the menu items in the file menu
     private static final int LOAD_MENU_ITEM_INDEX = 0;
     private static final int SAVE_MENU_ITEM_INDEX = 1;
+
+    private static final int BLOCK_WIDTH = 50;
+    private static final int BLOCK_HEIGHT = 50;
     //Array to store all the game buttons
     private Button[] buttons;
     //Array to store all the menu items
@@ -166,7 +177,7 @@ public class View {
 
         /* add colour and padding to the right layout */
         rightBox.setSpacing(10);
-        rightBox.setPadding(new Insets(20, 20, 20, 20));
+        rightBox.setPadding(new Insets(10, 10, 10, 10));
         rightBox.setStyle("-fx-background-color: #336699");
 
         /* add all the right side components to this rightBox */
@@ -194,6 +205,8 @@ public class View {
 
         innerView.getChildren().addAll(leftBox, rightBox);
         rootBox.getChildren().addAll(menuBar, innerView);
+
+        addRectangleToMap("green", 10, 10);
     }
 
     /**
@@ -213,10 +226,10 @@ public class View {
          * add the canvas inside a HBox the HBox (canvasContainer) is used so
          * that border can be added around the canvas
          */
-        HBox canvasContainer = new HBox();
+        HBox mapContainer = new HBox();
         worldMap = new GridPane();
         worldMap.setPrefSize(MAP_WIDTH, MAP_HEIGHT);
-        canvasContainer.getChildren().add(worldMap);
+        mapContainer.getChildren().add(worldMap);
         worldMap.setStyle("-fx-border-color: black");
 
         /* Create another HBox and add textInputs and Labels inside it */
@@ -227,7 +240,7 @@ public class View {
         inventoryBox.getChildren().addAll(new Label("Builder Inventory"),
                 inventoryLabel);
 
-        box.getChildren().addAll(canvasContainer, inventoryBox);
+        box.getChildren().addAll(mapContainer, inventoryBox);
 
     }
 
@@ -278,6 +291,33 @@ public class View {
         buttonLayout.setAlignment(buttons[3], Pos.CENTER);
         //Add the button layout to the box
         box.getChildren().add(buttonLayout);
+    }
+
+    public void addRectangleToMap(String colour, int col, int row){
+
+        Color rectColour=null;
+
+        switch (colour){
+            case "green":
+                rectColour = Color.GREEN;
+                break;
+            case "brown":
+                rectColour = Color.BROWN;
+                break;
+        }
+
+        Rectangle rect = new Rectangle();
+        rect.setWidth(BLOCK_WIDTH);
+        rect.setHeight(BLOCK_HEIGHT);
+        rect.setFill(rectColour);
+        worldMap.setGridLinesVisible(true);
+        worldMap.setRowIndex(rect, row);
+        worldMap.setColumnIndex(rect, col);
+
+        worldMap.getChildren().add(rect);
+
+
+
     }
 
 }
