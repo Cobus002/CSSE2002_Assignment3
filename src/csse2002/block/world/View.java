@@ -3,6 +3,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -11,15 +12,18 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+
+import javax.swing.*;
 
 
 /**
@@ -206,7 +210,6 @@ public class View {
         innerView.getChildren().addAll(leftBox, rightBox);
         rootBox.getChildren().addAll(menuBar, innerView);
 
-        addRectangleToMap("green", 10, 10);
     }
 
     /**
@@ -231,6 +234,7 @@ public class View {
         worldMap.setPrefSize(MAP_WIDTH, MAP_HEIGHT);
         mapContainer.getChildren().add(worldMap);
         worldMap.setStyle("-fx-border-color: black");
+        worldMap.setAlignment(Pos.CENTER);
 
         /* Create another HBox and add textInputs and Labels inside it */
         VBox inventoryBox = new VBox();
@@ -293,9 +297,76 @@ public class View {
         box.getChildren().add(buttonLayout);
     }
 
-    public void addRectangleToMap(String colour, int col, int row){
+    /**
+     * addRightArrowToGroup draws a right arrow on top of a group
+     * @param group
+     * @param startX
+     * @param startY
+     * @param endX
+     * @param endY
+     */
+    private void addRightArrowToGroup(Group group, int startX, int startY,
+                                 int endX, int endY){
+        //Create the lines
+        Line line1 = new Line(startX,startY, endX, endY);
+        Line line2 = new Line(startX+5, startY+10, endX, endY);
+        Line line3 = new Line(startX+5, startY-10, endX, endY);
+
+        line1.setStroke(Color.WHITE);
+        line2.setStroke(Color.WHITE);
+        line3.setStroke(Color.WHITE);
+
+        group.getChildren().addAll(line1, line2, line3);
+    }
+
+    private void addLeftArrowToGroup(Group group, int startX, int startY,
+                                      int endX, int endY){
+        //Create the lines
+        Line line1 = new Line(startX,startY, endX, endY);
+        Line line2 = new Line(startX-5, startY+10, endX, endY);
+        Line line3 = new Line(startX-5, startY-10, endX, endY);
+        line1.setStroke(Color.WHITE);
+        line2.setStroke(Color.WHITE);
+        line3.setStroke(Color.WHITE);
+        group.getChildren().addAll(line1, line2, line3);
+    }
+
+    private void addUpArrowToGroup(Group group, int startX, int startY,
+                                     int endX, int endY){
+        //Create the lines
+        Line line1 = new Line(startX,startY, endX, endY);
+        Line line2 = new Line(startX-10, startY-5, endX, endY);
+        Line line3 = new Line(startX+10, startY-5, endX, endY);
+        line1.setStroke(Color.WHITE);
+        line2.setStroke(Color.WHITE);
+        line3.setStroke(Color.WHITE);
+        group.getChildren().addAll(line1, line2, line3);
+    }
+
+    private void addDownArrowToGroup(Group group, int startX, int startY,
+                                     int endX, int endY){
+        //Create the lines
+        Line line1 = new Line(startX,startY, endX, endY);
+        Line line2 = new Line(startX-10, startY+5, endX, endY);
+        Line line3 = new Line(startX+10, startY+5, endX, endY);
+        line1.setStroke(Color.WHITE);
+        line2.setStroke(Color.WHITE);
+        line3.setStroke(Color.WHITE);
+        group.getChildren().addAll(line1, line2, line3);
+    }
+
+    private void addTextToGroup(Group group, String text, int x, int y){
+        Text textLabel = new Text(x-5, y+5, text);
+        textLabel.setStroke(Color.WHITE);
+        group.getChildren().add(textLabel);
+
+    }
+
+
+    public void addRectangleToMap(String colour, int row, int col){
 
         Color rectColour=null;
+        Group testGroup = new Group();
 
         switch (colour){
             case "green":
@@ -304,17 +375,31 @@ public class View {
             case "brown":
                 rectColour = Color.BROWN;
                 break;
+            case "black":
+                rectColour = Color.BLACK;
+                break;
+            case "gray":
+                rectColour = Color.GRAY;
+                break;
         }
 
         Rectangle rect = new Rectangle();
         rect.setWidth(BLOCK_WIDTH);
         rect.setHeight(BLOCK_HEIGHT);
         rect.setFill(rectColour);
-        worldMap.setGridLinesVisible(true);
-        worldMap.setRowIndex(rect, row);
-        worldMap.setColumnIndex(rect, col);
+        testGroup.getChildren().add(rect);
 
-        worldMap.getChildren().add(rect);
+
+        //Draw right arrow
+        addRightArrowToGroup(testGroup, 40, 25, 50, 25);
+        addLeftArrowToGroup(testGroup, 10, 25, 0, 25);
+        addDownArrowToGroup(testGroup, 25, 40, 25, 50);
+        addUpArrowToGroup(testGroup, 25, 10, 25, 0);
+        addTextToGroup(testGroup, "1", 25, 25);
+
+        worldMap.setColumnIndex(testGroup, col);
+        worldMap.setRowIndex(testGroup, row);
+        worldMap.getChildren().add(testGroup);
 
 
 

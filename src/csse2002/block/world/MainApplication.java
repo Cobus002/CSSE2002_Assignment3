@@ -20,7 +20,7 @@ public class MainApplication extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Canvas Example");
+        primaryStage.setTitle("Not A MineCraft Rip Off");
         
         View view = new View();
         

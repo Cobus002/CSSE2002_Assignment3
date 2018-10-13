@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A class to store a world map.
@@ -897,5 +898,13 @@ public class WorldMap {
         this.tileArray = new SparseTileArray();
         tileArray.addLinkedTiles(startingTile, startPosition.getX(),
                 startPosition.getY());
+    }
+
+    /**
+     * Get the world map
+     * @return
+     */
+    public Map<Position, Tile> getWorldMap(){
+        return tileArray.getTileMap();
     }
 }
