@@ -24,6 +24,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 import javax.swing.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -234,7 +237,8 @@ public class View {
         worldMap.setPrefSize(MAP_WIDTH, MAP_HEIGHT);
         mapContainer.getChildren().add(worldMap);
         worldMap.setStyle("-fx-border-color: black");
-        worldMap.setAlignment(Pos.CENTER);
+
+
 
         /* Create another HBox and add textInputs and Labels inside it */
         VBox inventoryBox = new VBox();
@@ -363,10 +367,10 @@ public class View {
     }
 
 
-    public void addRectangleToMap(String colour, int row, int col){
+    public void addRectangleToGroup(Group group, String colour, int row,
+                                    int col){
 
         Color rectColour=null;
-        Group testGroup = new Group();
 
         switch (colour){
             case "green":
@@ -387,20 +391,42 @@ public class View {
         rect.setWidth(BLOCK_WIDTH);
         rect.setHeight(BLOCK_HEIGHT);
         rect.setFill(rectColour);
-        testGroup.getChildren().add(rect);
+        group.getChildren().add(rect);
+    }
 
 
-        //Draw right arrow
-        addRightArrowToGroup(testGroup, 40, 25, 50, 25);
-        addLeftArrowToGroup(testGroup, 10, 25, 0, 25);
-        addDownArrowToGroup(testGroup, 25, 40, 25, 50);
-        addUpArrowToGroup(testGroup, 25, 10, 25, 0);
-        addTextToGroup(testGroup, "1", 25, 25);
+    public void drawTileOnMap(Position pos, Tile tile) throws TooLowException{
+        Group blockGroup = new Group();
+        Block topBlock = tile.getTopBlock();
+        //Add the coloured rectangle for the block
+        addRectangleToGroup(blockGroup, topBlock.getColour(), pos.getY(),
+                pos.getX());
 
-        worldMap.setColumnIndex(testGroup, col);
-        worldMap.setRowIndex(testGroup, row);
-        worldMap.getChildren().add(testGroup);
+        Map<String, Tile> exitsMap = tile.getExits();
+        Iterator it = exitsMap.entrySet().iterator();
 
+        while(it.hasNext()){
+            Map.Entry pair = (Map.Entry)it.next();
+            String exitDir = (String) pair.getKey();
+            switch (exitDir){
+                case "north":
+                    addUpArrowToGroup(blockGroup, 25, 10, 25, 0);
+                    break;
+                case "south":
+                    addDownArrowToGroup(blockGroup, 25, 40, 25, 50);
+                    break;
+                case "east":
+                    addRightArrowToGroup(blockGroup, 40, 25, 50, 25);
+                    break;
+                case "west":
+                    addLeftArrowToGroup(blockGroup, 10, 25, 0, 25);
+                    break;
+            }
+
+        }
+
+        addTextToGroup(blockGroup, "1", 25, 25);
+        worldMap.add(blockGroup, pos.getX()*BLOCK_WIDTH, pos.getY()*BLOCK_HEIGHT);
 
 
     }

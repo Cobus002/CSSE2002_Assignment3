@@ -57,17 +57,12 @@ public class Controller {
             Map.Entry pair = (Map.Entry)mapIterator.next();
             Position currPos = (Position) pair.getKey();
             Tile currTile = (Tile)pair.getValue();
-            String colour = new String("none");
-            try{
-                colour = currTile.getTopBlock().getColour();
+            try {
+                view.drawTileOnMap(currPos, currTile);
             }catch(TooLowException e){
-                //Too Low there is no top tile just use the default color
+                System.out.println("TooLowException error");
             }
-            view.addRectangleToMap(colour, currPos.getX(),currPos.getY());
-
         }
-
-
     }
 
     /**
