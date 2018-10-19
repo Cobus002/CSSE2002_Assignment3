@@ -3,6 +3,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -31,6 +32,8 @@ public class Controller {
     private boolean gameActive = false;
     //Current commbobox selected action
     private String actionType = null;
+    //The builder position
+    private Position builderPos = null;
 
     /**
      * Create a new Controller for the given view
@@ -65,7 +68,8 @@ public class Controller {
             Position currPos = (Position) pair.getKey();
             Tile currTile = (Tile) pair.getValue();
             try {
-                view.drawTileOnMap(currPos, currTile);
+                view.drawTileOnMap(currPos, currTile, builderPos.getX(),
+                        builderPos.getY());
             } catch (TooLowException e) {
                 System.out.println("TooLowException error");
             }
@@ -76,6 +80,39 @@ public class Controller {
      * EventHandler class which deals with user inputs no the buttons in the view
      */
     private class GameHandler implements EventHandler<ActionEvent> {
+
+        /**
+         * own handle action function since the given Action class
+         * processAction() function does not throw
+         * any exceptions to use for processing
+         * @param primaryAction
+         * @param secondary
+         * @throws NoExitException
+         * @throws TooHighException
+         * @throws InvalidBlockException
+         * @throws TooLowException
+         */
+        void handleAction(int primaryAction, String secondary) throws
+                NoExitException, TooHighException, InvalidBlockException,
+                TooLowException{
+
+            if(primaryAction==Action.MOVE_BUILDER){
+                Tile moveTo =
+                        gameMap.getBuilder().getCurrentTile().getExits().
+                                get(secondary);
+                gameMap.getBuilder().moveTo(moveTo);
+
+            }else if(primaryAction == Action.MOVE_BLOCK){
+                gameMap.getBuilder().getCurrentTile().moveBlock(
+                        secondary);
+            }else if(primaryAction == Action.DIG){
+                gameMap.getBuilder().digOnCurrentTile();
+            }else if(primaryAction == Action.DROP){
+                int index = Integer.parseInt(secondary);
+                gameMap.getBuilder().dropFromInventory(index);
+            }
+
+        }
 
         @Override
         public void handle(ActionEvent event) {
@@ -96,32 +133,49 @@ public class Controller {
                 primaryAction = Action.MOVE_BUILDER;
             }
             Button pressedButton = (Button) event.getSource();
-            Action actionTodo = null;
-            if (pressedButton == view.getNorthButton()) {
-                //handle the north button stuff
-                System.out.println("North");
-                actionTodo = new Action(primaryAction, "north");
-            } else if (pressedButton == view.getEastButton()) {
-                System.out.println("East");
-                actionTodo = new Action(primaryAction, "east");
-            } else if (pressedButton == view.getSouthButton()) {
-                System.out.println("South");
-                actionTodo = new Action(primaryAction, "south");
-            } else if (pressedButton == view.getWestButton()) {
-                System.out.println("West");
-                actionTodo = new Action(primaryAction, "west");
-            } else if (pressedButton == view.getDigButton()) {
-                System.out.println("Dig");
-                actionTodo = new Action(Action.DIG, null);
-            } else if (pressedButton == view.getDropButton()) {
-                //Todo: fix this drop implementation
-                System.out.println("Drop");
-                actionTodo = new Action(Action.DROP, null);
+
+            try {
+                if (pressedButton == view.getNorthButton()) {
+                    //handle the north button stuff
+                    System.out.println("North");
+                    handleAction(primaryAction, "north");
+                } else if (pressedButton == view.getEastButton()) {
+                    System.out.println("East");
+                    handleAction(primaryAction, "east");
+                } else if (pressedButton == view.getSouthButton()) {
+                    System.out.println("South");
+                    handleAction(primaryAction, "south");
+                } else if (pressedButton == view.getWestButton()) {
+                    System.out.println("West");
+                    handleAction(primaryAction, "west");
+                } else if (pressedButton == view.getDigButton()) {
+                    System.out.println("Dig");
+                    handleAction(Action.DIG, null);
+
+                } else if (pressedButton == view.getDropButton()) {
+                    //Todo: fix this drop implementation
+                    System.out.println("Drop");
+                }
+                drawMap();
+            } catch(Exception e){
+                //NoExitException, TooHighException, InvalidBlockException,
+                //                TooLowException
+                if(e instanceof NoExitException){
+                    showWarning("NoExitException");
+                }else if(e instanceof TooHighException){
+                    showWarning("TooHighException");
+                }else if(e instanceof InvalidBlockException){
+                    showWarning("InvalidBlockException");
+                }else if(e instanceof TooLowException){
+                    showWarning("TooLowException");
+                }
+
             }
 
-            Action.processAction(actionTodo, gameMap);
-            //Update the screen
-            drawMap();
+
+
+
+
 
         }
     }
@@ -160,6 +214,7 @@ public class Controller {
                     //Let the controller know that the map was loaded
                     // successfully
                     gameActive = true;
+                    builderPos = gameMap.getStartPosition();
                     drawMap();
                 } catch (Exception e) {
                     //The file was not found
@@ -172,6 +227,8 @@ public class Controller {
                     } else if (e instanceof WorldMapInconsistentException) {
                         System.out.println("WorldMapInconsistent");
                         showWarning("WorldMapInconsistent error occurred");
+                    }else{
+                        showWarning("Other error occured");
                     }
                 }
             }

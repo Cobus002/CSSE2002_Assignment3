@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
@@ -76,6 +77,8 @@ public class View {
     private MenuItem[] menuItems;
     //Combobox
     ComboBox actionSelectionBox;
+    //TextField for the index selection
+    TextField indexSelectionTextField;
 
     /*
      * text field to enter the x and y coord and previous pressed button/coords
@@ -337,17 +340,28 @@ public class View {
         buttonLayout.setAlignment(buttons[3], Pos.CENTER);
         //Add the button layout to the box
         box.getChildren().add(buttonLayout);
-
+        //Add the combobox and the dig and drop buttons to the right
         VBox buttonLayout2 = new VBox();
         buttonLayout2.setAlignment(Pos.CENTER);
         actionSelectionBox = new ComboBox();
         actionSelectionBox.getItems().addAll(BUILDER_ACTION_MSG,
                 BLOCK_ACTION_MSG);
         actionSelectionBox.setPrefWidth(80);
-        buttonLayout2.getChildren().addAll(actionSelectionBox, buttons[4],
-                buttons[5]);
+        HBox buttonLayout3 = new HBox();
+        buttonLayout3.setPadding(new Insets(10, 10, 10, 10));
+        buttonLayout3.setSpacing(15);
+
+        indexSelectionTextField = new TextField();
+        buttonLayout3.getChildren().addAll(buttons[DROP_BTN_INDEX],
+                indexSelectionTextField);
+
+        buttonLayout2.getChildren().addAll(actionSelectionBox, buttons[DIG_BTN_INDEX],
+                buttonLayout3);
+
         buttons[4].setPrefWidth(80);
         buttons[5].setPrefWidth(80);
+        //Add the inventory selection stuff to right side box
+
 
         box.getChildren().add(buttonLayout2);
 
@@ -449,8 +463,31 @@ public class View {
         group.getChildren().add(rect);
     }
 
+    /**
+     * Add a circle to the group at position
+     * @param group
+     * @param x
+     * @param y
+     */
+    private void addCircleToGroup(Group group, int x, int y ){
+        Circle circle = new Circle();
+        circle.setCenterX(x);
+        circle.setCenterY(y);
+        circle.setRadius(20);
+        circle.setFill(Color.YELLOW);
+        group.getChildren().add(circle);
+    }
 
-    public void drawTileOnMap(Position pos, Tile tile) throws TooLowException{
+    /**
+     * Draw the tile on the map view using position, tile and builder
+     * @param pos
+     * @param tile
+     * @throws TooLowException
+     */
+
+    public void drawTileOnMap(Position pos, Tile tile, int builderX,
+                              int builderY) throws TooLowException{
+        //Todo: add functionality to draw the builder on a tile
         Group blockGroup = new Group();
         Block topBlock = tile.getTopBlock();
         //Add the coloured rectangle for the block
@@ -479,9 +516,16 @@ public class View {
             }
 
         }
+        if((builderX==pos.getX())&&(builderY==pos.getY())){
+            //Add the builder as a circle to the tile
+            addCircleToGroup(blockGroup, pos.getX(), pos.getX());
+        }
 
-        addTextToGroup(blockGroup, "1", 25, 25);
+        addTextToGroup(blockGroup, Integer.toString(tile.getBlocks().size()),
+                25, 25);
         worldMap.add(blockGroup, pos.getX()*BLOCK_WIDTH, pos.getY()*BLOCK_HEIGHT);
+
+
 
 
     }
