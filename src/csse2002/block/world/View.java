@@ -163,6 +163,14 @@ public class View {
     /**
      * Set the handler for the buttons
      */
+    public String getIndexTextFieldText(){
+        return this.indexSelectionTextField.getText();
+    }
+
+    public void setInventoryLabel(String text){
+        this.inventoryLabel.setText(text);
+    }
+
     public void addButtonHandler(EventHandler<ActionEvent> eventHandler){
         for(Button currButton:buttons){
             currButton.setOnAction(eventHandler);
@@ -269,6 +277,8 @@ public class View {
         HBox mapContainer = new HBox();
         worldMap = new GridPane();
         worldMap.setPrefSize(MAP_WIDTH, MAP_HEIGHT);
+        worldMap.setAlignment(Pos.CENTER);
+        worldMap.setGridLinesVisible(true);
         mapContainer.getChildren().add(worldMap);
         worldMap.setStyle("-fx-border-color: black");
 
@@ -303,7 +313,7 @@ public class View {
         BorderPane buttonLayout = new BorderPane();
         buttons = new Button[6]; // loop over this and add new Button to the
         int buttonCount = 0;
-        for(Button currButton: buttons) {
+        for(int i = 0; i<6; i++) {
             switch (buttonCount) {
                 case 0:
                     buttons[buttonCount] = new Button(NORTH_MSG);
@@ -321,7 +331,6 @@ public class View {
                     buttons[buttonCount] = new Button(DIG_MSG);
                     break;
                 case 5:
-
                     buttons[buttonCount]= new Button(DROP_MSG);
                     break;
             }
@@ -338,6 +347,8 @@ public class View {
         buttonLayout.setAlignment(buttons[1], Pos.CENTER);
         buttonLayout.setAlignment(buttons[2], Pos.CENTER);
         buttonLayout.setAlignment(buttons[3], Pos.CENTER);
+        buttonLayout.setPadding(new Insets(10, 10, 10, 10));
+
         //Add the button layout to the box
         box.getChildren().add(buttonLayout);
         //Add the combobox and the dig and drop buttons to the right
@@ -347,15 +358,23 @@ public class View {
         actionSelectionBox.getItems().addAll(BUILDER_ACTION_MSG,
                 BLOCK_ACTION_MSG);
         actionSelectionBox.setPrefWidth(80);
+
+        buttonLayout.setCenter(actionSelectionBox);
+
         HBox buttonLayout3 = new HBox();
         buttonLayout3.setPadding(new Insets(10, 10, 10, 10));
         buttonLayout3.setSpacing(15);
 
+        HBox buttonLayout4 = new HBox();
+        buttonLayout4.setAlignment(Pos.CENTER_LEFT);
+        buttonLayout4.setPadding(new Insets(10, 10, 10, 10));
+        buttonLayout4.getChildren().add(buttons[DIG_BTN_INDEX]);
         indexSelectionTextField = new TextField();
+        indexSelectionTextField.setPrefWidth(40);
         buttonLayout3.getChildren().addAll(buttons[DROP_BTN_INDEX],
                 indexSelectionTextField);
 
-        buttonLayout2.getChildren().addAll(actionSelectionBox, buttons[DIG_BTN_INDEX],
+        buttonLayout2.getChildren().addAll(buttonLayout4,
                 buttonLayout3);
 
         buttons[4].setPrefWidth(80);
@@ -473,7 +492,7 @@ public class View {
         Circle circle = new Circle();
         circle.setCenterX(x);
         circle.setCenterY(y);
-        circle.setRadius(20);
+        circle.setRadius(5);
         circle.setFill(Color.YELLOW);
         group.getChildren().add(circle);
     }
@@ -518,9 +537,8 @@ public class View {
         }
         if((builderX==pos.getX())&&(builderY==pos.getY())){
             //Add the builder as a circle to the tile
-            addCircleToGroup(blockGroup, pos.getX(), pos.getX());
+            addCircleToGroup(blockGroup, 40, 10);
         }
-
         addTextToGroup(blockGroup, Integer.toString(tile.getBlocks().size()),
                 25, 25);
         worldMap.add(blockGroup, pos.getX()*BLOCK_WIDTH, pos.getY()*BLOCK_HEIGHT);

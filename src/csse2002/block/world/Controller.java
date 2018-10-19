@@ -74,6 +74,24 @@ public class Controller {
                 System.out.println("TooLowException error");
             }
         }
+        System.out.println(gameMap.getBuilder().getInventory().toString());
+        int inventorySize = gameMap.getBuilder().getInventory().size();
+        List<Block> inventoryList = gameMap.getBuilder().getInventory();
+        if(inventorySize==0){
+            view.setInventoryLabel("[ ]");
+        }else {
+            String inventoryString = new String();
+            inventoryString+="[ ";
+            int i = 0;
+            for( i = 0 ; i < inventorySize-1; i++){
+                inventoryString+=inventoryList.get(i).getBlockType();
+                inventoryString+=", ";
+            }
+
+            inventoryString += inventoryList.get(i).getBlockType();
+            inventoryString += " ]";
+            view.setInventoryLabel(inventoryString);
+        }
     }
 
     /**
@@ -101,6 +119,24 @@ public class Controller {
                         gameMap.getBuilder().getCurrentTile().getExits().
                                 get(secondary);
                 gameMap.getBuilder().moveTo(moveTo);
+                switch (secondary){
+                    case "north":
+                        builderPos = new Position(builderPos.getX(),
+                                builderPos.getY()-1);
+                        break;
+                    case "east":
+                        builderPos = new Position(builderPos.getX()+1,
+                                builderPos.getY());
+                        break;
+                    case "south":
+                        builderPos = new Position(builderPos.getX(),
+                                builderPos.getY()+1);
+                        break;
+                    case "west":
+                        builderPos = new Position(builderPos.getX()-1,
+                                builderPos.getY());
+                        break;
+                }
 
             }else if(primaryAction == Action.MOVE_BLOCK){
                 gameMap.getBuilder().getCurrentTile().moveBlock(
@@ -111,6 +147,8 @@ public class Controller {
                 int index = Integer.parseInt(secondary);
                 gameMap.getBuilder().dropFromInventory(index);
             }
+
+
 
         }
 
@@ -139,15 +177,19 @@ public class Controller {
                     //handle the north button stuff
                     System.out.println("North");
                     handleAction(primaryAction, "north");
+
                 } else if (pressedButton == view.getEastButton()) {
                     System.out.println("East");
                     handleAction(primaryAction, "east");
+
                 } else if (pressedButton == view.getSouthButton()) {
                     System.out.println("South");
                     handleAction(primaryAction, "south");
+
                 } else if (pressedButton == view.getWestButton()) {
                     System.out.println("West");
                     handleAction(primaryAction, "west");
+
                 } else if (pressedButton == view.getDigButton()) {
                     System.out.println("Dig");
                     handleAction(Action.DIG, null);
@@ -155,6 +197,7 @@ public class Controller {
                 } else if (pressedButton == view.getDropButton()) {
                     //Todo: fix this drop implementation
                     System.out.println("Drop");
+                    handleAction(Action.DROP, view.getIndexTextFieldText());
                 }
                 drawMap();
             } catch(Exception e){
