@@ -347,6 +347,16 @@ public class View {
         buttonLayout.setAlignment(buttons[1], Pos.CENTER);
         buttonLayout.setAlignment(buttons[2], Pos.CENTER);
         buttonLayout.setAlignment(buttons[3], Pos.CENTER);
+        buttonLayout.setMargin(buttons[0], new Insets(10, 10, 10, 10));
+        buttonLayout.setMargin(buttons[1], new Insets(10, 10, 10, 10));
+        buttonLayout.setMargin(buttons[2], new Insets(10, 10, 10, 10));
+        buttonLayout.setMargin(buttons[3], new Insets(10, 10, 10, 10));
+        buttons[0].setPrefWidth(80);
+        buttons[1].setPrefWidth(80);
+        buttons[2].setPrefWidth(80);
+        buttons[3].setPrefWidth(80);
+
+
         buttonLayout.setPadding(new Insets(10, 10, 10, 10));
 
         //Add the button layout to the box
@@ -370,7 +380,7 @@ public class View {
         buttonLayout4.setPadding(new Insets(10, 10, 10, 10));
         buttonLayout4.getChildren().add(buttons[DIG_BTN_INDEX]);
         indexSelectionTextField = new TextField();
-        indexSelectionTextField.setPrefWidth(40);
+        indexSelectionTextField.setPrefWidth(80);
         buttonLayout3.getChildren().addAll(buttons[DROP_BTN_INDEX],
                 indexSelectionTextField);
 
@@ -383,10 +393,6 @@ public class View {
 
 
         box.getChildren().add(buttonLayout2);
-
-
-
-
     }
 
     /**

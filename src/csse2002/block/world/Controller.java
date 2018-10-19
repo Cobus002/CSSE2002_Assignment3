@@ -74,7 +74,7 @@ public class Controller {
                 System.out.println("TooLowException error");
             }
         }
-        System.out.println(gameMap.getBuilder().getInventory().toString());
+        //Update the inventory label of the view
         int inventorySize = gameMap.getBuilder().getInventory().size();
         List<Block> inventoryList = gameMap.getBuilder().getInventory();
         if(inventorySize==0){
@@ -87,7 +87,6 @@ public class Controller {
                 inventoryString+=inventoryList.get(i).getBlockType();
                 inventoryString+=", ";
             }
-
             inventoryString += inventoryList.get(i).getBlockType();
             inventoryString += " ]";
             view.setInventoryLabel(inventoryString);
