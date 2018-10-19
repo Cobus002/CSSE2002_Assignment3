@@ -1,8 +1,11 @@
 package csse2002.block.world;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -18,14 +21,17 @@ import java.util.Map;
  * Used to control the View depending on user input
  */
 public class Controller {
-    
-    /* the view for the canvas application*/
+
+    /* the view for the application*/
     private View view;
     private Stage primaryStage;
-
+    //The world map
     private WorldMap gameMap;
+    //boolean to say if map has been loaded
     private boolean gameActive = false;
-    
+    //Current commbobox selected action
+    private String actionType = null;
+
     /**
      * Create a new Controller for the given view
      */
@@ -34,14 +40,16 @@ public class Controller {
         this.primaryStage = primaryStage;
         view.addButtonHandler(new GameHandler());
         view.addMenuItemHandlers(new MenuBarItemHandler());
+        view.addActionComboHandler(new ActionsComboBoxHandler());
     }
 
     /**
      * showWarning() method is used in the controller to show error and
      * warning messages to the user.
+     *
      * @param msg
      */
-    protected static void showWarning(String msg){
+    protected static void showWarning(String msg) {
         Alert myAlert = new Alert(Alert.AlertType.WARNING, msg);
         myAlert.show();
     }
@@ -49,17 +57,16 @@ public class Controller {
     /**
      * Draw the top tile in the world map of the tiles
      */
-    protected void drawMap(){
-
+    protected void drawMap() {
         Map<Position, Tile> loadMap = gameMap.getWorldMap();
         Iterator mapIterator = loadMap.entrySet().iterator();
-        while(mapIterator.hasNext()){
-            Map.Entry pair = (Map.Entry)mapIterator.next();
+        while (mapIterator.hasNext()) {
+            Map.Entry pair = (Map.Entry) mapIterator.next();
             Position currPos = (Position) pair.getKey();
-            Tile currTile = (Tile)pair.getValue();
+            Tile currTile = (Tile) pair.getValue();
             try {
                 view.drawTileOnMap(currPos, currTile);
-            }catch(TooLowException e){
+            } catch (TooLowException e) {
                 System.out.println("TooLowException error");
             }
         }
@@ -72,24 +79,50 @@ public class Controller {
 
         @Override
         public void handle(ActionEvent event) {
-            
+
             /* Get the button which was just pressed */
-            // TODO: code here
-            if(!gameActive){
+            if (!gameActive) {
                 showWarning("Load map first");
                 return;
             }
+            if(actionType == null){
+                showWarning("Select action type with combobox");
+                return;
+            }
+            int primaryAction = 99;
+            if(actionType.equals("block")){
+                primaryAction = Action.MOVE_BLOCK;
+            }else{
+                primaryAction = Action.MOVE_BUILDER;
+            }
             Button pressedButton = (Button) event.getSource();
-            if(pressedButton == view.getNorthButton()){
+            Action actionTodo = null;
+            if (pressedButton == view.getNorthButton()) {
                 //handle the north button stuff
                 System.out.println("North");
-            }else if(pressedButton == view.getEastButton()){
+                actionTodo = new Action(primaryAction, "north");
+            } else if (pressedButton == view.getEastButton()) {
                 System.out.println("East");
-            }else if(pressedButton == view.getSouthButton()){
+                actionTodo = new Action(primaryAction, "east");
+            } else if (pressedButton == view.getSouthButton()) {
                 System.out.println("South");
-            }else if(pressedButton == view.getWesthButton()){
+                actionTodo = new Action(primaryAction, "south");
+            } else if (pressedButton == view.getWestButton()) {
                 System.out.println("West");
+                actionTodo = new Action(primaryAction, "west");
+            } else if (pressedButton == view.getDigButton()) {
+                System.out.println("Dig");
+                actionTodo = new Action(Action.DIG, null);
+            } else if (pressedButton == view.getDropButton()) {
+                //Todo: fix this drop implementation
+                System.out.println("Drop");
+                actionTodo = new Action(Action.DROP, null);
             }
+
+            Action.processAction(actionTodo, gameMap);
+            //Update the screen
+            drawMap();
+
         }
     }
 
@@ -97,25 +130,25 @@ public class Controller {
      * Event handler for the menu bar items. Used to Load and save the world
      * maps from text files.
      */
-    private class MenuBarItemHandler implements EventHandler<ActionEvent>{
+    private class MenuBarItemHandler implements EventHandler<ActionEvent> {
 
         @Override
         public void handle(ActionEvent event) {
             MenuItem menuItemPressed = (MenuItem) event.getSource();
 
-            if(menuItemPressed == view.getSaveMenuItem()){
+            if (menuItemPressed == view.getSaveMenuItem()) {
                 System.out.println("Save");
                 FileChooser fc = new FileChooser();
                 File selectedFile = fc.showSaveDialog(primaryStage);
                 //Pass the file to the appropriate save function
-                try{
+                try {
                     gameMap.saveMap(selectedFile.toString());
-                }catch(Exception e){
-                    if(e instanceof IOException){
+                } catch (Exception e) {
+                    if (e instanceof IOException) {
                         showWarning("IOException error");
                     }
                 }
-            }else if(menuItemPressed == view.getLoadMenuItem()){
+            } else if (menuItemPressed == view.getLoadMenuItem()) {
                 System.out.println("Load");
                 FileChooser fc = new FileChooser();
                 File selectedFile = fc.showOpenDialog(primaryStage);
@@ -128,20 +161,30 @@ public class Controller {
                     // successfully
                     gameActive = true;
                     drawMap();
-                }catch(Exception e){
+                } catch (Exception e) {
                     //The file was not found
-                    if(e instanceof FileNotFoundException){
+                    if (e instanceof FileNotFoundException) {
                         System.out.println("File not found");
                         showWarning("File not found");
-                    }else if(e instanceof WorldMapFormatException){
+                    } else if (e instanceof WorldMapFormatException) {
                         System.out.println("WorldFormatMapException");
                         showWarning("WorldFormatMapException error occurred");
-                    }else if(e instanceof WorldMapInconsistentException){
+                    } else if (e instanceof WorldMapInconsistentException) {
                         System.out.println("WorldMapInconsistent");
                         showWarning("WorldMapInconsistent error occurred");
                     }
                 }
             }
+        }
+    }
+
+    public class ActionsComboBoxHandler implements ChangeListener<String> {
+
+        @Override
+        public void changed(ObservableValue<? extends String> observable,
+                            String oldValue, String newValue) {
+            actionType = newValue;
+
         }
     }
 }

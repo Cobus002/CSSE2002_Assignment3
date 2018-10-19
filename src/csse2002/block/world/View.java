@@ -51,11 +51,19 @@ public class View {
     private static final String SOUTH_MSG = "south";
     private static final String EAST_MSG = "east";
     private static final String WEST_MSG = "west";
+    //Dig and Drop Messages
+    private static final String DIG_MSG = "dig";
+    private static final String DROP_MSG = "drop";
+    //Action messages for the combobox
+    private static final String BUILDER_ACTION_MSG = "builder";
+    private static final String BLOCK_ACTION_MSG = "block";
     //Specific index of each button in the buttons array
     private static final int NORTH_BTN_INDEX = 0;
     private static final int SOUTH_BTN_INDEX = 2;
     private static final int EAST_BTN_INDEX = 1;
     private static final int WEST_BTN_INDEX = 3;
+    private static final int DIG_BTN_INDEX = 4;
+    private static final int DROP_BTN_INDEX = 5;
     //Specific index of the menu items in the file menu
     private static final int LOAD_MENU_ITEM_INDEX = 0;
     private static final int SAVE_MENU_ITEM_INDEX = 1;
@@ -66,6 +74,8 @@ public class View {
     private Button[] buttons;
     //Array to store all the menu items
     private MenuItem[] menuItems;
+    //Combobox
+    ComboBox actionSelectionBox;
 
     /*
      * text field to enter the x and y coord and previous pressed button/coords
@@ -129,10 +139,24 @@ public class View {
     /**
      * Get the west button
      */
-    public Button getWesthButton(){
+    public Button getWestButton(){
         return this.buttons[WEST_BTN_INDEX];
     }
 
+    public String getActionComboText(){
+        return this.actionSelectionBox.getId();
+    }
+    /**
+     * Get the dig button instance
+     * @return
+     */
+    public Button getDigButton(){return this.buttons[DIG_BTN_INDEX];}
+
+    /**
+     * Get the drop button instance
+     * @return
+     */
+    public Button getDropButton(){return this.buttons[DROP_BTN_INDEX];}
     /**
      * Set the handler for the buttons
      */
@@ -140,6 +164,14 @@ public class View {
         for(Button currButton:buttons){
             currButton.setOnAction(eventHandler);
         }
+    }
+
+    /**
+     * Add the handler for the actionsCombobox
+     * @param actionsComboBoxHandler
+     */
+    public void addActionComboHandler(Controller.ActionsComboBoxHandler actionsComboBoxHandler) {
+        this.actionSelectionBox.valueProperty().addListener(actionsComboBoxHandler);
     }
 
     public MenuItem getLoadMenuItem(){
@@ -191,7 +223,6 @@ public class View {
         addRightSideComponents(rightBox);
 
         /* add both layouts to the root HBox layout */
-        // TODO: code here
         rootBox = new VBox();
         HBox innerView = new HBox();
 
@@ -267,7 +298,7 @@ public class View {
         box.getChildren().add(drawText);
 
         BorderPane buttonLayout = new BorderPane();
-        buttons = new Button[4]; // loop over this and add new Button to the
+        buttons = new Button[6]; // loop over this and add new Button to the
         int buttonCount = 0;
         for(Button currButton: buttons) {
             switch (buttonCount) {
@@ -282,6 +313,13 @@ public class View {
                     break;
                 case 3:
                     buttons[buttonCount] = new Button(WEST_MSG);
+                    break;
+                case 4:
+                    buttons[buttonCount] = new Button(DIG_MSG);
+                    break;
+                case 5:
+
+                    buttons[buttonCount]= new Button(DROP_MSG);
                     break;
             }
             buttonCount++;
@@ -299,6 +337,23 @@ public class View {
         buttonLayout.setAlignment(buttons[3], Pos.CENTER);
         //Add the button layout to the box
         box.getChildren().add(buttonLayout);
+
+        VBox buttonLayout2 = new VBox();
+        buttonLayout2.setAlignment(Pos.CENTER);
+        actionSelectionBox = new ComboBox();
+        actionSelectionBox.getItems().addAll(BUILDER_ACTION_MSG,
+                BLOCK_ACTION_MSG);
+        actionSelectionBox.setPrefWidth(80);
+        buttonLayout2.getChildren().addAll(actionSelectionBox, buttons[4],
+                buttons[5]);
+        buttons[4].setPrefWidth(80);
+        buttons[5].setPrefWidth(80);
+
+        box.getChildren().add(buttonLayout2);
+
+
+
+
     }
 
     /**
@@ -430,5 +485,6 @@ public class View {
 
 
     }
+
 
 }
