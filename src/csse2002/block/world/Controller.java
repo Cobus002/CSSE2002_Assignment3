@@ -142,13 +142,21 @@ public class Controller {
      */
     protected void drawMap() {
         Iterator mapIterator = gameMapWithCoords.entrySet().iterator();
+        Position shiftPosition = new Position(4-builderPos.getX(),
+                4-builderPos.getY());
+        view.resetMapView();
         while (mapIterator.hasNext()) {
             Map.Entry pair = (Map.Entry) mapIterator.next();
             Position currPos = (Position) pair.getKey();
             Tile currTile = (Tile) pair.getValue();
+
             try {
-                view.drawTileOnMap(currPos, currTile, builderPos.getX(),
-                        builderPos.getY());
+                Position modifiedPos =
+                        new Position(currPos.getX()+shiftPosition.getX(),
+                                currPos.getY()+shiftPosition.getY());
+                view.drawTileOnMap(modifiedPos, currTile,
+                        shiftPosition.getX()+builderPos.getX(),
+                        shiftPosition.getY()+builderPos.getY());
             } catch (TooLowException e) {
                 System.out.println("TooLowException error");
             }
@@ -215,7 +223,6 @@ public class Controller {
                                 builderPos.getY());
                         break;
                 }
-
             }else if(primaryAction == Action.MOVE_BLOCK){
                 gameMap.getBuilder().getCurrentTile().moveBlock(
                         secondary);
@@ -225,9 +232,6 @@ public class Controller {
                 int index = Integer.parseInt(secondary);
                 gameMap.getBuilder().dropFromInventory(index);
             }
-
-
-
         }
 
         @Override

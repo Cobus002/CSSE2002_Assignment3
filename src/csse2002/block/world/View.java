@@ -277,7 +277,6 @@ public class View {
         HBox mapContainer = new HBox();
         worldMap = new GridPane();
         worldMap.setPrefSize(MAP_WIDTH, MAP_HEIGHT);
-        worldMap.setAlignment(Pos.CENTER);
         worldMap.setGridLinesVisible(true);
         mapContainer.getChildren().add(worldMap);
         worldMap.setStyle("-fx-border-color: black");
@@ -461,8 +460,7 @@ public class View {
     }
 
 
-    public void addRectangleToGroup(Group group, String colour, int row,
-                                    int col){
+    public void addRectangleToGroup(Group group, String colour){
 
         Color rectColour=null;
 
@@ -479,6 +477,8 @@ public class View {
             case "gray":
                 rectColour = Color.GRAY;
                 break;
+            case "white":
+                rectColour = Color.WHITE;
         }
 
         Rectangle rect = new Rectangle();
@@ -512,12 +512,10 @@ public class View {
 
     public void drawTileOnMap(Position pos, Tile tile, int builderX,
                               int builderY) throws TooLowException{
-        //Todo: add functionality to draw the builder on a tile
         Group blockGroup = new Group();
         Block topBlock = tile.getTopBlock();
         //Add the coloured rectangle for the block
-        addRectangleToGroup(blockGroup, topBlock.getColour(), pos.getY(),
-                pos.getX());
+        addRectangleToGroup(blockGroup, topBlock.getColour());
 
         Map<String, Tile> exitsMap = tile.getExits();
         Iterator it = exitsMap.entrySet().iterator();
@@ -539,7 +537,6 @@ public class View {
                     addLeftArrowToGroup(blockGroup, 10, 25, 0, 25);
                     break;
             }
-
         }
         if((builderX==pos.getX())&&(builderY==pos.getY())){
             //Add the builder as a circle to the tile
@@ -549,10 +546,18 @@ public class View {
                 25, 25);
         worldMap.add(blockGroup, pos.getX()*BLOCK_WIDTH, pos.getY()*BLOCK_HEIGHT);
 
-
-
-
     }
 
+    public void resetMapView(){
+        int rows = 9;
+        int cols = 9;
 
+        worldMap.getChildren().clear();
+        for(int i =0; i<rows; i++){
+            Group emptyGroup = new Group();
+            addRectangleToGroup(emptyGroup, "white");
+            worldMap.add(emptyGroup, i*BLOCK_WIDTH, i*BLOCK_HEIGHT);
+
+        }
+    }
 }

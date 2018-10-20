@@ -289,12 +289,4 @@ public class SparseTileArray {
         orderedTiles = new ArrayList<>();
     }
 
-    /**
-     * gteTileMap() function is used to get the position and tile data of the
-     * world map.
-     * @return
-     */
-    public HashMap<Position, Tile> getTileMap(){
-        return this.tileMap;
-    }
 }

@@ -899,12 +899,4 @@ public class WorldMap {
         tileArray.addLinkedTiles(startingTile, startPosition.getX(),
                 startPosition.getY());
     }
-
-    /**
-     * Get the world map
-     * @return
-     */
-    public Map<Position, Tile> getWorldMap(){
-        return tileArray.getTileMap();
-    }
 }
