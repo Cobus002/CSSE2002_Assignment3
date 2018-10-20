@@ -513,10 +513,15 @@ public class View {
     public void drawTileOnMap(Position pos, Tile tile, int builderX,
                               int builderY) throws TooLowException{
         Group blockGroup = new Group();
-        Block topBlock = tile.getTopBlock();
-        //Add the coloured rectangle for the block
-        addRectangleToGroup(blockGroup, topBlock.getColour());
+        try {
+            Block topBlock = tile.getTopBlock();
+            //Add the coloured rectangle for the block
+            addRectangleToGroup(blockGroup, topBlock.getColour());
+        }catch (TooLowException e){
+            addRectangleToGroup(blockGroup, "white");
 
+        }
+        
         Map<String, Tile> exitsMap = tile.getExits();
         Iterator it = exitsMap.entrySet().iterator();
 
@@ -547,6 +552,7 @@ public class View {
         worldMap.add(blockGroup, pos.getX()*BLOCK_WIDTH, pos.getY()*BLOCK_HEIGHT);
 
     }
+
 
     public void resetMapView(){
         int rows = 9;
