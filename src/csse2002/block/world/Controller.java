@@ -12,9 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The Controller class for the GUI
@@ -22,6 +20,16 @@ import java.util.Map;
  * Used to control the View depending on user input
  */
 public class Controller {
+
+    //Private constants used for the exits
+    private static final String NORTH = "north";
+    private static final String EAST = "east";
+    private static final String SOUTH = "south";
+    private static final String WEST = "west";
+
+    //List for the directions to make loops easier
+    private static final List<String> DIRECTION_LIST = Arrays.asList(NORTH,
+            EAST, SOUTH, WEST);
 
     /* the view for the application*/
     private View view;
@@ -34,6 +42,8 @@ public class Controller {
     private String actionType = null;
     //The builder position
     private Position builderPos = null;
+    //Map to store <Position, Tile> info
+    Map<Position, Tile> gameMapWithCoords;
 
     /**
      * Create a new Controller for the given view
@@ -58,11 +68,80 @@ public class Controller {
     }
 
     /**
+     * generateGameMapWithCoords() function is used to generate Map with
+     * positions and tiles mapped together, this is used to make drawing
+     * easier since we don't have access to the already generated tileMap in
+     * the sparseTileArray class(which would have been easy to implement with
+     * to getter functions, see Piazza for my discussion).
+     * @param startingTile
+     * @param startingX
+     * @param startingY
+     * @return
+     */
+    private Map<Position, Tile> generateGameMapWithCoords(Tile startingTile,
+                                                          int startingX,
+                                                          int startingY){
+        //Resulting map
+        Map<Position, Tile> resultMap = new LinkedHashMap<>();
+        //Set up the Queue structure used in the breadth first search
+        Queue<Position> toVisitQueue = new LinkedList<>();
+        Set<Position> visited = new LinkedHashSet<>();
+        Map<Position, Tile> toVisitMap = new HashMap<>();
+        Map<String, Tile> exits;
+        Tile tileAtPos;
+        Position currPos = new Position(startingX, startingY);
+        toVisitMap.put(currPos, startingTile);
+        toVisitQueue.add(currPos);
+        /************* Start Breadth-First Search Algorithm ***************/
+        while(toVisitQueue.size()!=0){
+            currPos = toVisitQueue.remove();
+            tileAtPos = toVisitMap.get(currPos);
+
+            if(!visited.contains(currPos)){
+                //First visit
+                visited.add(currPos);
+                resultMap.put(currPos, tileAtPos);
+                exits=tileAtPos.getExits();
+                Iterator dirIterator = DIRECTION_LIST.iterator();
+                int currPosX = currPos.getX();
+                int currPosY = currPos.getY();
+                while(dirIterator.hasNext()){
+                    Position newPos = null;
+                    String direction = (String)dirIterator.next();
+
+                    switch(direction){
+                        case NORTH:
+                            newPos = new Position(currPosX, currPosY-1);
+                            break;
+                        case EAST:
+                            newPos = new Position(currPosX + 1, currPosY);
+                            break;
+                        case SOUTH:
+                            newPos = new Position(currPosX, currPosY + 1);
+                            break;
+                        case WEST:
+                            newPos = new Position(currPosX - 1, currPosY);
+                            break;
+                    }
+                    if(exits.containsKey(direction)){
+                        toVisitQueue.add(newPos);
+                        toVisitMap.put(newPos, exits.get(direction));
+                    }
+
+                }
+            }
+
+        }
+        /************* End Breadth-First Search Algorithm ***************/
+
+        return resultMap;
+    }
+
+    /**
      * Draw the top tile in the world map of the tiles
      */
     protected void drawMap() {
-        Map<Position, Tile> loadMap = gameMap.getWorldMap();
-        Iterator mapIterator = loadMap.entrySet().iterator();
+        Iterator mapIterator = gameMapWithCoords.entrySet().iterator();
         while (mapIterator.hasNext()) {
             Map.Entry pair = (Map.Entry) mapIterator.next();
             Position currPos = (Position) pair.getKey();
@@ -231,7 +310,7 @@ public class Controller {
         @Override
         public void handle(ActionEvent event) {
             MenuItem menuItemPressed = (MenuItem) event.getSource();
-
+            //If the save menubar item was pressed handle below
             if (menuItemPressed == view.getSaveMenuItem()) {
                 System.out.println("Save");
                 FileChooser fc = new FileChooser();
@@ -244,6 +323,7 @@ public class Controller {
                         showWarning("IOException error");
                     }
                 }
+                //If the Load menubar item was pressed
             } else if (menuItemPressed == view.getLoadMenuItem()) {
                 System.out.println("Load");
                 FileChooser fc = new FileChooser();
@@ -257,6 +337,9 @@ public class Controller {
                     // successfully
                     gameActive = true;
                     builderPos = gameMap.getStartPosition();
+                    gameMapWithCoords =
+                            generateGameMapWithCoords(gameMap.getTile(builderPos),
+                            builderPos.getX(), builderPos.getY());
                     drawMap();
                 } catch (Exception e) {
                     //The file was not found
