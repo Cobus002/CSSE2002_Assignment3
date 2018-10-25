@@ -34,9 +34,10 @@ public class SparseTileArray {
      * Hint: Construct a {@literal Map<Position, Tile>}
      * in addLinkedTiles to allow looking up tiles
      * by position.
+     *
      * @param position the tile position
      * @return the tile at (x, y) or null if
-     *         no such tile exists.
+     * no such tile exists.
      * @require position != null
      */
     public Tile getTile(Position position) {
@@ -58,8 +59,9 @@ public class SparseTileArray {
      * if not, changing the list (i.e., adding or removing elements)
      * should not change that returned by subsequent calls to
      * getTiles().
+     *
      * @return a list of tiles in breadth-first-search
-     *         order.
+     * order.
      */
     public List<Tile> getTiles() {
         return new ArrayList<>(orderedTiles);
@@ -79,18 +81,18 @@ public class SparseTileArray {
      * between the two tiles), tile2 will get a new position based on tile1's
      * position, and tile1's exit name.
      * <ul>
-     *     <li> tile2 at "north"  exit should get a new position of
-     *          (x1, y1 - 1) i.e. getTile(new Position(x1, y1 - 1))
-     *          == tile1.getExits().get("north") </li>
-     *     <li> tile2 at "east" exit should get a position of (x1 + 1, y1),
-     *          i.e. getTile(new Position(x1 + 1, y1))
-     *          == tile1.getExits().get("east") </li>
-     *     <li> tile2 at "south" exit should get a position of (x1, y1 + 1),
-     *          i.e. getTile(new Position(x1, y1 + 1))
-     *          == tile1.getExits().get("south") </li>
-     *     <li> tile2 at "west" exit should get a position of (x1 - 1, y1),
-     *          i.e. getTile(new Position(x1 - 1, y1))
-     *          == tile1.getExits().get("west")</li>
+     * <li> tile2 at "north"  exit should get a new position of
+     * (x1, y1 - 1) i.e. getTile(new Position(x1, y1 - 1))
+     * == tile1.getExits().get("north") </li>
+     * <li> tile2 at "east" exit should get a position of (x1 + 1, y1),
+     * i.e. getTile(new Position(x1 + 1, y1))
+     * == tile1.getExits().get("east") </li>
+     * <li> tile2 at "south" exit should get a position of (x1, y1 + 1),
+     * i.e. getTile(new Position(x1, y1 + 1))
+     * == tile1.getExits().get("south") </li>
+     * <li> tile2 at "west" exit should get a position of (x1 - 1, y1),
+     * i.e. getTile(new Position(x1 - 1, y1))
+     * == tile1.getExits().get("west")</li>
      * </ul>
      * </li>
      * <li> If there are tiles that are not geometrically consistent, i.e. Tiles
@@ -98,15 +100,15 @@ public class SparseTileArray {
      * for getTile() method to work, throw a WorldMapInconsistentException. <br>
      * Two examples of inconsistent tiles are:
      * <ol>
-     *     <li> tile1.getExits().get("north").getExits().get("south) is non null
-     *          and not == to tile1, throw a WorldMapInconsistentException.
-     *          Note: one waY exits are allowed, so
-     *          tile1.getExits().get("north").getExits().get("south) == null
-     *          would be acceptable, but
-     *          tile1.getExits().get("north").getExits().get("south)
-     *          == tile2 foR some other non-null tile2 is not. </li>
-     *     <li> tile1.getExits().get("north").getExits().get("north") == tile1.
-     *          tile1 exits in two different places in this case. </li>
+     * <li> tile1.getExits().get("north").getExits().get("south) is non null
+     * and not == to tile1, throw a WorldMapInconsistentException.
+     * Note: one waY exits are allowed, so
+     * tile1.getExits().get("north").getExits().get("south) == null
+     * would be acceptable, but
+     * tile1.getExits().get("north").getExits().get("south)
+     * == tile2 foR some other non-null tile2 is not. </li>
+     * <li> tile1.getExits().get("north").getExits().get("north") == tile1.
+     * tile1 exits in two different places in this case. </li>
      * </ol>
      * </li>
      * <li> getTiles() should return a list of each accessible tile in a
@@ -123,7 +125,6 @@ public class SparseTileArray {
      * @param startingY    the y coordinate of startingTile in the array
      * @throws WorldMapInconsistentException if the tiles in the set are not
      *                                       Geometrically consistent
-     *
      * @require startingTile != null
      * @ensure tiles accessed through getTile() are geometrically consistent
      */
@@ -174,15 +175,17 @@ public class SparseTileArray {
                 // create the associated position in that direction
                 Position positionInDirection =
                         new Position(position.getX() + DIRECTIONS_X[i],
-                        position.getY() + DIRECTIONS_Y[i]);
+                                position.getY() + DIRECTIONS_Y[i]);
 
                 try {
                     if (checkExistingTileValid(tileMap, tilePositions,
                             positionInDirection, tileInDirection)) {
 
-                        // if the tile is valid (hasn't already been placed, the map
+                        // if the tile is valid (hasn't already been placed,
+                        // the map
                         // is still consistent) add the new tile for processing.
-                        addTileForProcessing(tilesToProcess, tileMap, tilePositions,
+                        addTileForProcessing(tilesToProcess, tileMap,
+                                tilePositions,
                                 positionInDirection, tileInDirection);
                     }
                 } catch (WorldMapInconsistentException inconsistentException) {
@@ -214,7 +217,8 @@ public class SparseTileArray {
      * @throws WorldMapInconsistentException
      */
     private static boolean checkExistingTileValid(Map<Position, Tile> positionToTile, Map<Tile, Position> tileToPosition,
-                                                  Position position, Tile tile) throws WorldMapInconsistentException {
+                                                  Position position,
+                                                  Tile tile) throws WorldMapInconsistentException {
         if (tile == null) {
             // this exit is a dead end, do not go any further
             return false;

@@ -47,17 +47,17 @@ public class Action {
      * Create an Action that represents a manipulation of the blockworld.
      * An action is represented by a primary action (one of MOVE_BUILDER,
      * MOVE_BLOCK, DIG or DROP), and a secondary action <br>
-     *
+     * <p>
      * Whether a secondary action is required depends on the primary action:
      * <ol>
-     *    <li> MOVE_BUILDER and MOVE_BLOCK require a direction as the
-     *    secondaryAction (one of "north", "east", "south" or "west"). </li>
-     *    <li> DROP requires the index of at which a Block from the inventory
-     *    should be dropped (stored as a string in this class, e.g., "1"). </li>
-     *    <li> DIG does not require a secondary action, so an empty string
-     *    can be passed to secondaryAction. </li>
+     * <li> MOVE_BUILDER and MOVE_BLOCK require a direction as the
+     * secondaryAction (one of "north", "east", "south" or "west"). </li>
+     * <li> DROP requires the index of at which a Block from the inventory
+     * should be dropped (stored as a string in this class, e.g., "1"). </li>
+     * <li> DIG does not require a secondary action, so an empty string
+     * can be passed to secondaryAction. </li>
      * </ol>
-     *
+     * <p>
      * This constructor does not need to check primaryAction or secondaryAction,
      * it just needs to construct an action such that
      * getPrimaryAction() == primaryAction, and
@@ -76,6 +76,7 @@ public class Action {
     /**
      * Get the integer representing the Action (e.g., return 0 if Action is
      * MOVE_BUILDER)
+     *
      * @return the primary action
      */
     public int getPrimaryAction() {
@@ -84,8 +85,9 @@ public class Action {
 
     /**
      * Gets the supplementary information associated with the Action.
+     *
      * @return the secondary action, or "" (empty string) if no secondary
-     *         action exists
+     * action exists
      */
     public String getSecondaryAction() {
         return secondaryAction;
@@ -93,42 +95,42 @@ public class Action {
 
     /**
      * Create a single Action if possible from the given reader. <br>
-     *
+     * <p>
      * Read a line from the given reader and load the Action on that line.
      * Only load one Action (<b>hint:</b> reader.readLine()) and return
      * the created action. <br>
      * Each line consists of a primary action, and optionally a secondary
      * action.<br>
-     *
+     * <p>
      * This function should do the following:
      * <ul>
-     *     <li> If any line consists of 2 or more spaces (i.e. more than 2
-     *          tokens) throws an ActionFormatException. </li>
-     *     <li> If the primary action is not one of MOVE_BLOCK, MOVE_BUILDER,
-     *          DROP or DIG, throw an ActionFormatException. </li>
-     *     <li> If the primary action is MOVE_BLOCK, MOVE_BUILDER or DROP, and
-     *          the primary action is not followed by a secondary action, throws
-     *          an ActionFormatException.</li>
-     *     <li> If the primary action is DIG, and DIG is not on a line by
-     *          itself, with no trailing whitespace, throws an
-     *          ActionFormatException. </li>
-     *     <li> If the primary action is MOVE_BLOCK, MOVE_BUILDER or DROP, then
-     *          creates and return a new Action with the primary action constant
-     *          with the same name, and the secondary action. This method does
-     *          not check the secondary action. </li>
-     *     <li> If the primary action is DIG, returns a new Action with the
-     *          primary action constant DIG, and an empty string ("") for the
-     *          secondary action. </li>
-     *     <li> If reader is at the end of the file, returns null. </li>
-     *     <li> If an IOException is thrown by the reader, then throw an
-     *          ActionFormatException. </li>
+     * <li> If any line consists of 2 or more spaces (i.e. more than 2
+     * tokens) throws an ActionFormatException. </li>
+     * <li> If the primary action is not one of MOVE_BLOCK, MOVE_BUILDER,
+     * DROP or DIG, throw an ActionFormatException. </li>
+     * <li> If the primary action is MOVE_BLOCK, MOVE_BUILDER or DROP, and
+     * the primary action is not followed by a secondary action, throws
+     * an ActionFormatException.</li>
+     * <li> If the primary action is DIG, and DIG is not on a line by
+     * itself, with no trailing whitespace, throws an
+     * ActionFormatException. </li>
+     * <li> If the primary action is MOVE_BLOCK, MOVE_BUILDER or DROP, then
+     * creates and return a new Action with the primary action constant
+     * with the same name, and the secondary action. This method does
+     * not check the secondary action. </li>
+     * <li> If the primary action is DIG, returns a new Action with the
+     * primary action constant DIG, and an empty string ("") for the
+     * secondary action. </li>
+     * <li> If reader is at the end of the file, returns null. </li>
+     * <li> If an IOException is thrown by the reader, then throw an
+     * ActionFormatException. </li>
      * </ul>
-     *
+     * <p>
      * For details of the action format see Action.loadActions().
      *
      * @param reader the reader to read the action contents form
      * @return the created action, or null if the reader is at the end of
-     *     the file.
+     * the file.
      * @throws ActionFormatException if the line has invalid contents and
      *                               the action cannot be created
      * @require reader != null
@@ -145,7 +147,7 @@ public class Action {
             }
 
 
-            String [] tokens = line.split(" ", 3);
+            String[] tokens = line.split(" ", 3);
 
             if (tokens.length > 2) {
                 throw new ActionFormatException("Too many tokens on line.");
@@ -182,21 +184,21 @@ public class Action {
     /**
      * Read all the actions from the given reader and perform them on the
      * given block world. <br>
-     *
+     * <p>
      * All actions that can be performed should print an appropriate message
      * (as outlined in processAction()), any invalid actions that cannot
      * be created or performed on the world map, should also print an error
      * message (also described in processAction()). <br>
-     *
+     * <p>
      * Each message should be printed on a new line (Use System.out.println()).
      * <br>
-     *
+     * <p>
      * Each action is listed on a single line, and one file can contain
      * multiple actions. <br>
-     *
+     * <p>
      * Each action must be processed after it is read (i.e. do not read the
      * whole file first, read and process each action one at a time).
-     *
+     * <p>
      * The file format is as follows:
      * <br>
      *
@@ -206,28 +208,28 @@ public class Action {
      * ...
      * primaryActionN secondaryActionN
      * }</pre>
-     *
+     * <p>
      * There is a single space " " between each primaryAction and
      * secondaryAction. <br>
      * The primaryAction should be one of the following values:
      * <ul>
-     *     <li> MOVE_BUILDER </li>
-     *     <li> MOVE_BLOCK </li>
-     *     <li> DIG </li>
-     *     <li> DROP </li>
+     * <li> MOVE_BUILDER </li>
+     * <li> MOVE_BLOCK </li>
+     * <li> DIG </li>
+     * <li> DROP </li>
      * </ul>
-     *
-     *
+     * <p>
+     * <p>
      * If the secondaryAction is present, it should be one of the following
      * values:
      * <ul>
-     *     <li> north </li>
-     *     <li> east </li>
-     *     <li> south </li>
-     *     <li> west </li>
-     *     <li> (a number) for DROP action </li>
+     * <li> north </li>
+     * <li> east </li>
+     * <li> south </li>
+     * <li> west </li>
+     * <li> (a number) for DROP action </li>
      * </ul>
-     *
+     * <p>
      * An example file may look like this:
      * <pre>{@literal
      * MOVE_BUILDER north
@@ -241,7 +243,7 @@ public class Action {
      * MOVE_BLOCK north
      * RANDOM_ACTION
      * }</pre>
-     *
+     * <p>
      * If all actions can be performed on the map, the output from the above
      * file is:
      * <pre>{@literal
@@ -254,17 +256,17 @@ public class Action {
      * Top block on current tile removed
      * Moved builder south
      * Moved block north
-     *} </pre>
+     * } </pre>
      * (The line "RANDOM_ACTION" should then cause an ActionFormatException to
      * be thrown) <br>
-     *
+     * <p>
      * Hint: Repeatedly call Action.loadAction() to get the next Action, and
      * then Action.processAction() to process the action. <br>
      *
-     * @param reader the reader to read actions from
+     * @param reader      the reader to read actions from
      * @param startingMap the starting map that actions will be applied to
      * @throws ActionFormatException if loadAction throws an
-     *         ActionFormatException
+     *                               ActionFormatException
      * @require reader != null
      * @require startingMap != null
      */
@@ -286,51 +288,51 @@ public class Action {
      * Tile on which the builder is currently on should be updated to contain
      * 1 less block (Builder.digOnCurrentTile()). The builder to use for actions
      * is that given by map.getBuilder().
-     *
+     * <p>
      * Do the following for these actions:
      * <ul>
-     *      <li> For DIG action: call Builder.digOnCurrentTile(), then print to
-     *           console "Top block on current tile removed".</li>
+     * <li> For DIG action: call Builder.digOnCurrentTile(), then print to
+     * console "Top block on current tile removed".</li>
      *
-     *      <li> For DROP action: call Builder.dropFromInventory(), then print
-     *           to console "Dropped a block from inventory". The dropped item
-     *           is given by action.getSecondaryAction(), that is first
-     *           converted to an int. If the action.getSecondaryAction() cannot
-     *           be converted to an int, print "Error: Invalid action" to the
-     *           console. Valid integers (including negative integers and large
-     *           positive integers) should be passed to
-     *           Builder.dropFromInventory(). </li>
+     * <li> For DROP action: call Builder.dropFromInventory(), then print
+     * to console "Dropped a block from inventory". The dropped item
+     * is given by action.getSecondaryAction(), that is first
+     * converted to an int. If the action.getSecondaryAction() cannot
+     * be converted to an int, print "Error: Invalid action" to the
+     * console. Valid integers (including negative integers and large
+     * positive integers) should be passed to
+     * Builder.dropFromInventory(). </li>
      *
-     *      <li> For the MOVE_BLOCK action: call Tile.moveBlock() on the
-     *           builder's current tile (Builder.getCurrentTile()), then print
-     *           to console "Moved block {direction}". The direction is given by
-     *           action.getSecondaryAction()</li>
+     * <li> For the MOVE_BLOCK action: call Tile.moveBlock() on the
+     * builder's current tile (Builder.getCurrentTile()), then print
+     * to console "Moved block {direction}". The direction is given by
+     * action.getSecondaryAction()</li>
      *
-     *      <li> For MOVE_BUILDER action: call Builder.moveTo(), then print to
-     *           console "Moved builder {direction}". The direction is given by
-     *           action.getSecondaryAction()</li>
+     * <li> For MOVE_BUILDER action: call Builder.moveTo(), then print to
+     * console "Moved builder {direction}". The direction is given by
+     * action.getSecondaryAction()</li>
      *
-     *      <li> If action.getPrimaryAction() {@literal < 0}
-     *           or action.getPrimaryAction() {@literal > 3},
-     *           or action.getSecondary() is not a direction
-     *           (for MOVE_BLOCK or MOVE_BUILDER),
-     *           or a valid integer (for DROP) then print to console
-     *           "Error: Invalid action" </li>
+     * <li> If action.getPrimaryAction() {@literal < 0}
+     * or action.getPrimaryAction() {@literal > 3},
+     * or action.getSecondary() is not a direction
+     * (for MOVE_BLOCK or MOVE_BUILDER),
+     * or a valid integer (for DROP) then print to console
+     * "Error: Invalid action" </li>
      * </ul>
      * "{direction}" is one of "north", "east", "south" or "west". <br>
-     *
+     * <p>
      * For handling exceptions do the following:
      * <ul>
-     *     <li> If a NoExitException is thrown, print to the console
-     *          "No exit this way" </li>
-     *     <li> If a TooHighException is thrown, print to the console
-     *          "Too high" </li>
-     *     <li> If a TooLowException is thrown, print to the console
-     *          "Too low" </li>
-     *     <li> If an InvalidBlockException is thrown, print to the console
-     *          "Cannot use that block" </li>
+     * <li> If a NoExitException is thrown, print to the console
+     * "No exit this way" </li>
+     * <li> If a TooHighException is thrown, print to the console
+     * "Too high" </li>
+     * <li> If a TooLowException is thrown, print to the console
+     * "Too low" </li>
+     * <li> If an InvalidBlockException is thrown, print to the console
+     * "Cannot use that block" </li>
      * </ul>
-     *
+     * <p>
      * Each line printed to the console should have a trailing newline
      * (i.e., use System.out.println()).
      *
@@ -394,7 +396,8 @@ public class Action {
 
     /**
      * Handle moving the builder.
-     * @param map the map to use
+     *
+     * @param map       the map to use
      * @param direction the direction as a string
      * @throws NoExitException if the builder cannot move that direction
      */
@@ -408,12 +411,13 @@ public class Action {
 
     /**
      * Handle moving a block.
-     * @param map the map to use
+     *
+     * @param map       the map to use
      * @param direction the direction as a string
-     * @throws TooHighException Tile.moveBlock() throws a TooHighException
+     * @throws TooHighException      Tile.moveBlock() throws a TooHighException
      * @throws InvalidBlockException the block on the builder's tile is not
-     *         moveable.
-     * @throws NoExitException if there is no exit in that direction.
+     *                               moveable.
+     * @throws NoExitException       if there is no exit in that direction.
      */
     private static void handleMoveBlock(WorldMap map, String direction)
             throws TooHighException, InvalidBlockException, NoExitException {
@@ -422,12 +426,13 @@ public class Action {
 
     /**
      * Handle dropping a block.
-     * @param map the map to use
+     *
+     * @param map   the map to use
      * @param index the block index in the Builder's inventory
-     * @throws TooHighException if Builder.drop() would throw a
-     *         TooHighException
+     * @throws TooHighException      if Builder.drop() would throw a
+     *                               TooHighException
      * @throws InvalidBlockException if Builder.drop() would throw an
-     *         InvalidBlockException
+     *                               InvalidBlockException
      */
     private static void handleDrop(WorldMap map, int index)
             throws TooHighException, InvalidBlockException {
@@ -436,11 +441,12 @@ public class Action {
 
     /**
      * Handle digging a block.
+     *
      * @param map the map to use
-     * @throws TooLowException if Builder.digOnCurrentTIle() would throw a
-     *         TooLowException
+     * @throws TooLowException       if Builder.digOnCurrentTIle() would throw a
+     *                               TooLowException
      * @throws InvalidBlockException if Builder.digOnCurrentTile() would throw
-     *         an InvalidBlockException
+     *                               an InvalidBlockException
      */
     private static void handleDig(WorldMap map)
             throws TooLowException, InvalidBlockException {

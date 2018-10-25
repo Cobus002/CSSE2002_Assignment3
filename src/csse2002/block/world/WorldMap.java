@@ -13,6 +13,7 @@ import java.util.Map;
 
 /**
  * A class to store a world map.
+ *
  * @serial exclude
  */
 public class WorldMap {
@@ -43,6 +44,7 @@ public class WorldMap {
 
         /**
          * Create a line reader from a BufferedReader.
+         *
          * @param reader the BufferedReader to read from
          */
         LineReader(BufferedReader reader) {
@@ -52,6 +54,7 @@ public class WorldMap {
 
         /**
          * Get an error string "Error on line {@literal<line-number>}.
+         *
          * @return an error string
          */
         String errorOnLine() {
@@ -65,9 +68,9 @@ public class WorldMap {
          * "File ended abruptly".
          *
          * @return the line that was read
-         * @throws IOException if BufferedReader.readLine() fails
+         * @throws IOException             if BufferedReader.readLine() fails
          * @throws WorldMapFormatException if BufferedReader.readLine()
-         *         returns null.
+         *                                 returns null.
          */
         String readLineOrThrow() throws IOException,
                 WorldMapFormatException {
@@ -79,12 +82,13 @@ public class WorldMap {
          * exception if the WorldMap file is invalid. If a WorldMapFormat
          * exception is thrown, it will have the error message given
          * by errorMsg.
+         *
          * @param errorMsg the error message to pass to a WorldMapFormat
-         *         exception
+         *                 exception
          * @return the line that was read
-         * @throws IOException if BufferedReader.readLine() fails
+         * @throws IOException             if BufferedReader.readLine() fails
          * @throws WorldMapFormatException if BufferedReader.readLine()
-         *         returns null.
+         *                                 returns null.
          */
         String readLineOrThrow(String errorMsg) throws
                 IOException, WorldMapFormatException {
@@ -106,16 +110,18 @@ public class WorldMap {
          * blank line. The WorldMapFormat exception will have an error
          * message given by errorMsgFileEnd, if the file ends, or
          * errorMsgNotBlank, if the next line is not blank.
-         * @param errorMsgFileEnd the error message to pass to a
-         *         WorldMapFormatException if the file ends
+         *
+         * @param errorMsgFileEnd  the error message to pass to a
+         *                         WorldMapFormatException if the file ends
          * @param errorMsgNotBlank the error message to pass to a
-         *         WorldMapFormatException if the next line is not blank.
-         * @throws IOException if BufferedReader.readLine() fails
+         *                         WorldMapFormatException if the next line
+         *                         is not blank.
+         * @throws IOException             if BufferedReader.readLine() fails
          * @throws WorldMapFormatException if BufferedReader.readLine()
-         *         returns null.
+         *                                 returns null.
          */
         void readBlankLineOrThrow(String errorMsgFileEnd,
-                                         String errorMsgNotBlank) throws
+                                  String errorMsgNotBlank) throws
                 IOException, WorldMapFormatException {
             String line = reader.readLine();
 
@@ -135,11 +141,12 @@ public class WorldMap {
          * exception if the WorldMap file has not ended.
          * The WorldMapFormatException will have an error
          * message given by errorMsgNotEof.
+         *
          * @param errorMsgNotEof error message to pass to a
-         *         WorldMapFormatException if the file ends
-         * @throws IOException if BufferedReader.readLine() fails
+         *                       WorldMapFormatException if the file ends
+         * @throws IOException             if BufferedReader.readLine() fails
          * @throws WorldMapFormatException if BufferedReader.readLine()
-         *         does not return null.
+         *                                 does not return null.
          */
         void readEofOrThrow(String errorMsgNotEof) throws
                 IOException, WorldMapFormatException {
@@ -155,12 +162,13 @@ public class WorldMap {
     /**
      * Parse an integer from a string, or throw a WorldMapFormatException with
      * error message given by errorMsg.
+     *
      * @param intString the string to convert
-     * @param errorMsg the errorMsg to pass to WorldMapFormatException
-     *         if an error is thrown.
+     * @param errorMsg  the errorMsg to pass to WorldMapFormatException
+     *                  if an error is thrown.
      * @return an integer parsed from the string.
      * @throws WorldMapFormatException if the string does not contain
-     *         a valid integer.
+     *                                 a valid integer.
      */
     private static int parseInt(String intString, String errorMsg)
             throws WorldMapFormatException {
@@ -179,17 +187,22 @@ public class WorldMap {
      * a WorldMapFormatException if the string is not an integer,
      * if the value of the integer is less than min, or if the vvalue of
      * the integer is greater than or equal to max.
-     * @param intString the string to convert
-     * @param errorMsgNotInt the error message to pass to
-     *         WorldMapFormatException if the string is not an integer.
-     * @param errorMsgBelowMin the error meessage to pass to
-     *         WorldMapFormatException if the integer is less than min.
+     *
+     * @param intString               the string to convert
+     * @param errorMsgNotInt          the error message to pass to
+     *                                WorldMapFormatException if the string
+     *                                is not an integer.
+     * @param errorMsgBelowMin        the error meessage to pass to
+     *                                WorldMapFormatException if the integer
+     *                                is less than min.
      * @param errorMsgAboveOrEqualMax the error message to pass to
-     *         WorldMapFormatException if the integer is greater than or
-     *         equal to max.
+     *                                WorldMapFormatException if the integer
+     *                                is greater than or
+     *                                equal to max.
      * @return an integer parsed from the string.
      * @throws WorldMapFormatException if the string does not contain a valid
-     *         integer, or if the string is not between [min, max).
+     *                                 integer, or if the string is not
+     *                                 between [min, max).
      */
     private static int parseIntBetween(String intString, int min, int max,
                                        String errorMsgNotInt,
@@ -211,14 +224,17 @@ public class WorldMap {
      * Parse an integer from a string, or throw
      * a WorldMapFormatException if the string is not an integer,
      * or if the value of the integer is less than 0.
-     * @param intString the string to convert
-     * @param errorMsgNotInt the error message to pass to
-     *         WorldMapFormatException if the string is not an integer.
+     *
+     * @param intString        the string to convert
+     * @param errorMsgNotInt   the error message to pass to
+     *                         WorldMapFormatException if the string is not
+     *                         an integer.
      * @param errorMsgNegative the error meessage to pass to
-     *         WorldMapFormatException if the integer is less than 0.
+     *                         WorldMapFormatException if the integer is less
+     *                         than 0.
      * @return an integer parsed from the string.
      * @throws WorldMapFormatException if the string does not contain a valid
-     *         integer, or if the integer is negative.
+     *                                 integer, or if the integer is negative.
      */
     private static int parsePositiveInt(String intString, String errorMsgNotInt,
                                         String errorMsgNegative)
@@ -233,22 +249,25 @@ public class WorldMap {
      * throws a WorldMapFormatException with the error message errorMsgTooFew
      * or if the string has more than one delimeter, throws a
      * WorldMapFormatException with the error message errorMsgTooMany.
-     * @param str the string to split
-     * @param delim the delimiter to split the string on (passed
-     *         passed to String.split().
-     * @param errorMsgTooFew the error message to pass to a
-     *         WorldMapFormatException if there are no delimeters.
+     *
+     * @param str             the string to split
+     * @param delim           the delimiter to split the string on (passed
+     *                        passed to String.split().
+     * @param errorMsgTooFew  the error message to pass to a
+     *                        WorldMapFormatException if there are no
+     *                        delimeters.
      * @param errorMsgTooMany the error message to pass to a
-     *         WorldMapFormatException if there are too many delimiters.
+     *                        WorldMapFormatException if there are too many
+     *                        delimiters.
      * @return Two strings in an array.
      * @throws WorldMapFormatException if the string does not contain exactly
-     *         one delimiter
+     *                                 one delimiter
      */
-    private static String [] splitInTwo(String str, String delim,
-                                        String errorMsgTooFew,
-                                        String errorMsgTooMany) throws
+    private static String[] splitInTwo(String str, String delim,
+                                       String errorMsgTooFew,
+                                       String errorMsgTooMany) throws
             WorldMapFormatException {
-        String [] strings = str.split(delim, 3);
+        String[] strings = str.split(delim, 3);
         if (strings.length == 1) {
             throw new WorldMapFormatException(errorMsgTooFew);
         } else if (strings.length == 3) {
@@ -265,12 +284,14 @@ public class WorldMap {
      * of tiles that are linked to startingTile. <br>
      * Hint: create a SparseTileArray as a member, and use the
      * addLinkedTiles to populate it.
-     * @param startingTile the tile which the builder starts on
+     *
+     * @param startingTile  the tile which the builder starts on
      * @param startPosition the position of the starting tile
-     * @param builder the builder who will traverse the block world
+     * @param builder       the builder who will traverse the block world
      * @throws WorldMapInconsistentException if there are inconsistencies
-     *         in the positions of tiles (such as two tiles at a single
-     *         position)
+     *                                       in the positions of tiles (such
+     *                                       as two tiles at a single
+     *                                       position)
      * @require startingTile != null
      * @require startPosition != null
      * @require builder != null
@@ -327,118 +348,121 @@ public class WorldMap {
      * Construct a block world map from the given filename. <br>
      * The block world map format is as follows:
      * <pre>{@literal
-     *<startingX>
-     *<startingY>
-     *<builder's name>
-     *<inventory1>,<inventory2>, ... ,<inventoryN>
+     * <startingX>
+     * <startingY>
+     * <builder's name>
+     * <inventory1>,<inventory2>, ... ,<inventoryN>
      *
-     *total:<number of tiles>
-     *<tile0 id> <block1>,<block2>, ... ,<blockN>
-     *<tile1 id> <block1>,<block2>, ... ,<blockN>
+     * total:<number of tiles>
+     * <tile0 id> <block1>,<block2>, ... ,<blockN>
+     * <tile1 id> <block1>,<block2>, ... ,<blockN>
      *    ...
-     *<tileN-1 id> <block1>,<block2>, ... ,<blockN>
+     * <tileN-1 id> <block1>,<block2>, ... ,<blockN>
      *
-     *exits
-     *<tile0 id> <name1>:<id1>,<name2>:<id2>, ... ,<nameN>:<idN>
-     *<tile1 id> <name1>:<id1>,<name2>:<id2>, ... ,<nameN>:<idN>
+     * exits
+     * <tile0 id> <name1>:<id1>,<name2>:<id2>, ... ,<nameN>:<idN>
+     * <tile1 id> <name1>:<id1>,<name2>:<id2>, ... ,<nameN>:<idN>
      *    ...
-     *<tileN-1 id> <name1>:<id1>,<name2>:<id2>, ... ,<nameN>:<idN>
-     *}</pre>
-     *
-     *
+     * <tileN-1 id> <name1>:<id1>,<name2>:<id2>, ... ,<nameN>:<idN>
+     * }</pre>
+     * <p>
+     * <p>
      * For example: <br>
      * <pre>{@literal
-     *1
-     *2
-     *Bob
-     *wood,wood,wood,soil
+     * 1
+     * 2
+     * Bob
+     * wood,wood,wood,soil
      *
-     *total:4
-     *0 soil,soil,grass,wood
-     *1 grass,grass,soil
-     *2 soil,soil,soil,wood
-     *3 grass,grass,grass,stone
+     * total:4
+     * 0 soil,soil,grass,wood
+     * 1 grass,grass,soil
+     * 2 soil,soil,soil,wood
+     * 3 grass,grass,grass,stone
      *
-     *exits
-     *0 east:2,north:1,west:3
-     *1 south:0
-     *2 west:0
-     *3 east:0
-     *}</pre>
-     *
+     * exits
+     * 0 east:2,north:1,west:3
+     * 1 south:0
+     * 2 west:0
+     * 3 east:0
+     * }</pre>
+     * <p>
      * Note: Files may end with or without a single newline character, but
      * there should not be any blank lines at the end of the file. <br>
-     *
+     * <p>
      * Tile IDs are the ordering of tiles returned by getTiles()
      * i.e. tile 0 is getTiles().get(0). <br>
-     *
+     * <p>
      * Tiles must have IDs bewteen 0 and N-1, where N is the number of tiles.
      * <br>
-     *
+     * <p>
      * The ordering does not need to be checked when loading a map (but
      * the saveMap function below does when saving). <br>
      * Note: A blank line is required for an empty inventory, and lines with
      * just an ID followed by a space are required for:
      * <ul>
-     *     <li> A tile entry below "total:N", if the tile has no blocks </li>
-     *     <li> A tile entry below "exits", if the tile has no exits </li>
+     * <li> A tile entry below "total:N", if the tile has no blocks </li>
+     * <li> A tile entry below "exits", if the tile has no exits </li>
      * </ul>
-     *
+     * <p>
      * The function should do the following:
      * <ol>
-     *     <li> Open the filename and read a map in the format
-     *          given above. </li>
-     *     <li> Construct a new Builder with the name and inventory from the
-     *          file (to be returned by getBuilder()), and a starting tile set
-     *          to the tile with ID 0 </li>
-     *     <li> Construct a new Position for the starting position from the
-     *          file to be returned as getStartPosition() </li>
-     *     <li> Construct a Tile for each tile entry in the file (to be
-     *          returned by getTiles() and getTile()) </li>
-     *     <li> Link each tile by the exits that are given. </li>
-     *     <li> Throw a WorldMapFormatException if the format of the
-     *          file is incorrect. This includes:
-     *          <ul>
-     *                  <li> Any lines are missing, including the blank lines
-     *                          before "total:N", and before exits </li>
-     *                  <li> startingX or startingY (lines 1 and 2) are not
-     *                          valid integers </li>
-     *                  <li> There are not N entries under the line that says
-     *                          "total:N" </li>
-     *                  <li> There are not N entries under the "exits" line
-     *                          (there should be exactly N entries and then the
-     *                          file should end.) </li>
-     *                  <li> N is not a valid integer, or N is negative </li>
-     *                  <li> The names of blocks in inventory and on tiles are
-     *                          not one of "grass", "soil", "wood", "stone"
-     *                          </li>
-     *                  <li> The names of exits in the "exits" sections are not
-     *                          one of "north", "east", "south", "west" </li>
-     *                  <li> The ids of tiles are not valid integers, are less
-     *                          than 0 or greater than N - 1 </li>
-     *                  <li> The ids that the exits refer to do not exist in the
-     *                          list of tiles </li>
-     *                  <li> loaded tiles contain too many blocks, or
-     *                          GroundBlocks that have an index that is too
-     *                          high (i.e., if the Tile or constructors would
-     *                          throw exceptions). </li>
-     *                  <li> A file operation throws an IOException that is not
-     *                          a FileNotFoundException </li>
-     *          </ul></li>
-     *     <li> Throw a WorldMapInconsistentException if the format is
-     *          correct, but tiles would end up in geometrically impossible
-     *          locations (see SparseTileArray.addLinkedTiles()). </li>
-     *     <li> Throw a FileNotFoundException if the file does not exist. </li>
+     * <li> Open the filename and read a map in the format
+     * given above. </li>
+     * <li> Construct a new Builder with the name and inventory from the
+     * file (to be returned by getBuilder()), and a starting tile set
+     * to the tile with ID 0 </li>
+     * <li> Construct a new Position for the starting position from the
+     * file to be returned as getStartPosition() </li>
+     * <li> Construct a Tile for each tile entry in the file (to be
+     * returned by getTiles() and getTile()) </li>
+     * <li> Link each tile by the exits that are given. </li>
+     * <li> Throw a WorldMapFormatException if the format of the
+     * file is incorrect. This includes:
+     * <ul>
+     * <li> Any lines are missing, including the blank lines
+     * before "total:N", and before exits </li>
+     * <li> startingX or startingY (lines 1 and 2) are not
+     * valid integers </li>
+     * <li> There are not N entries under the line that says
+     * "total:N" </li>
+     * <li> There are not N entries under the "exits" line
+     * (there should be exactly N entries and then the
+     * file should end.) </li>
+     * <li> N is not a valid integer, or N is negative </li>
+     * <li> The names of blocks in inventory and on tiles are
+     * not one of "grass", "soil", "wood", "stone"
+     * </li>
+     * <li> The names of exits in the "exits" sections are not
+     * one of "north", "east", "south", "west" </li>
+     * <li> The ids of tiles are not valid integers, are less
+     * than 0 or greater than N - 1 </li>
+     * <li> The ids that the exits refer to do not exist in the
+     * list of tiles </li>
+     * <li> loaded tiles contain too many blocks, or
+     * GroundBlocks that have an index that is too
+     * high (i.e., if the Tile or constructors would
+     * throw exceptions). </li>
+     * <li> A file operation throws an IOException that is not
+     * a FileNotFoundException </li>
+     * </ul></li>
+     * <li> Throw a WorldMapInconsistentException if the format is
+     * correct, but tiles would end up in geometrically impossible
+     * locations (see SparseTileArray.addLinkedTiles()). </li>
+     * <li> Throw a FileNotFoundException if the file does not exist. </li>
      * </ol>
-     *
+     * <p>
      * Hint: create a SparseTileArray as a member and call
      * SparseTileArray.addLinkedTiles() to populate it.
      *
      * @param filename the name to load the file from
-     * @throws WorldMapFormatException if the file is incorrectly formatted
+     * @throws WorldMapFormatException       if the file is incorrectly
+     * formatted
      * @throws WorldMapInconsistentException if the file is correctly
-     *         formatted, but has inconsistencies (such as overlapping tiles)
-     * @throws FileNotFoundException if the file does not exist
+     *                                       formatted, but has
+     *                                       inconsistencies (such as
+     *                                       overlapping tiles)
+     * @throws FileNotFoundException         if the file does not exist
      * @require filename != null
      * @ensure the loaded map is geometrically consistent
      */
@@ -457,7 +481,7 @@ public class WorldMap {
 
             String yString = reader.readLineOrThrow();
             int y = parseInt(yString, reader.errorOnLine()
-                            + "Invalid integer for starting position y");
+                    + "Invalid integer for starting position y");
 
             Position startPosition = new Position(x, y);
 
@@ -474,7 +498,7 @@ public class WorldMap {
 
             String tileCount = reader.readLineOrThrow();
 
-            String [] totalNumTokens = splitInTwo(tileCount, ":",
+            String[] totalNumTokens = splitInTwo(tileCount, ":",
                     reader.errorOnLine() + "No colon"
                             + "separating 'total' and N",
                     reader.errorOnLine() + "Multiple colons on"
@@ -496,7 +520,7 @@ public class WorldMap {
                 String tileEntry = reader.readLineOrThrow(
                         "Missing tile under 'total:N'");
 
-                String [] tileParts = splitInTwo(tileEntry, " ",
+                String[] tileParts = splitInTwo(tileEntry, " ",
                         reader.errorOnLine()
                                 + "No space in tile entry",
                         reader.errorOnLine()
@@ -515,7 +539,7 @@ public class WorldMap {
                 tiles[tileId] = tile;
             }
 
-            boolean [] hasExitLine = new boolean[numTiles];
+            boolean[] hasExitLine = new boolean[numTiles];
             for (int i = 0; i < tiles.length; i++) {
                 if (tiles[i] == null) {
                     throw new WorldMapFormatException("Missing entry"
@@ -527,7 +551,7 @@ public class WorldMap {
 
             // blank line, followed by an exits header
             reader.readBlankLineOrThrow("File ends abruptly"
-                    + " after tile entries.",
+                            + " after tile entries.",
                     "Missing blank line "
                             + "after tile entries (or too many entries).");
 
@@ -584,22 +608,22 @@ public class WorldMap {
      * getTiles() i.e. tile 0 is getTiles().get(0) <br>
      * The function should do the following:
      * <ol>
-     *     <li> Open the filename and write a map in the format
-     *     given in the WorldMap constructor. </li>
-     *     <li> Write the starting position (given by getStartPosition())
-     *     </li>
-     *     <li> Write the current builder's (given by getBuilder()) name
-     *     and inventory.</li>
-     *     <li> Write the number of tiles </li>
-     *     <li> Write the index, and then each tile as given by
-     *     getTiles() (in the same order). </li>
-     *     <li> Write each tile's exits, as given by
-     *     getTiles().get(id).getExits() </li>
-     *     <li> Throw an IOException if the file cannot be opened for
-     *     writing, or if writing fails. </li>
+     * <li> Open the filename and write a map in the format
+     * given in the WorldMap constructor. </li>
+     * <li> Write the starting position (given by getStartPosition())
+     * </li>
+     * <li> Write the current builder's (given by getBuilder()) name
+     * and inventory.</li>
+     * <li> Write the number of tiles </li>
+     * <li> Write the index, and then each tile as given by
+     * getTiles() (in the same order). </li>
+     * <li> Write each tile's exits, as given by
+     * getTiles().get(id).getExits() </li>
+     * <li> Throw an IOException if the file cannot be opened for
+     * writing, or if writing fails. </li>
      *
      * </ol>
-     *
+     * <p>
      * Hint: call getTiles()
      *
      * @param filename the filename to be written to
@@ -653,8 +677,8 @@ public class WorldMap {
      * written to a tileArray file.
      *
      * @param tiles all the tiles in the tileArray
-     * @param tile the tile to encode the exits of
-     * @param id the id of the tile in the file
+     * @param tile  the tile to encode the exits of
+     * @param id    the id of the tile in the file
      * @return an encoded string representing the tile's exits
      */
     private static String encodeExits(List<Tile> tiles, Tile tile, int id) {
@@ -680,8 +704,9 @@ public class WorldMap {
     /**
      * Encodes the given tile in the correct format to be written to a tileArray
      * file.
+     *
      * @param tile the tile to be encoded
-     * @param id the id of the tile in the file
+     * @param id   the id of the tile in the file
      * @return the encoded tile
      */
     private static String encodeTile(Tile tile, int id) {
@@ -691,6 +716,7 @@ public class WorldMap {
     /**
      * Encodes a list of blocks in the correct format to be written to a
      * world map file.
+     *
      * @param blocks the list of blocks to be encoded
      * @return the encoded block list
      */
@@ -714,14 +740,16 @@ public class WorldMap {
      * Adds the necessary exits (as laid out in exitString) to the appropriate
      * tile in the tiles array.
      *
-     * @param tiles the tiles which can be involved in an exit
+     * @param tiles      the tiles which can be involved in an exit
      * @param exitString gives the id of the current tile, the exit names for
-     *     that tile, and the other tiles which those exits tileArray to
+     *                   that tile, and the other tiles which those exits
+     *                   tileArray to
      * @return the id of the tile read from the file
-     * @throws NoExitException if Tile.addExit throws a NoExitException (should
-     *         not be possible).
+     * @throws NoExitException         if Tile.addExit throws a
+     * NoExitException (should
+     *                                 not be possible).
      * @throws WorldMapFormatException if the tile string is formatted
-     *         incorrectly.
+     *                                 incorrectly.
      */
     private static int addTileExits(Tile[] tiles, String exitString)
             throws NoExitException, WorldMapFormatException {
@@ -739,7 +767,7 @@ public class WorldMap {
             tileId = Integer.parseInt(parts[0]);
         } catch (NumberFormatException nfe) {
             throw new WorldMapFormatException("Tile id in exit line is not"
-                   + " a valid number");
+                    + " a valid number");
         }
 
         if (tileId < 0) {
@@ -772,10 +800,10 @@ public class WorldMap {
 
             if (exitInfo.length == 1) {
                 throw new WorldMapFormatException("Exit line"
-                      + " is missing colon.");
+                        + " is missing colon.");
             } else if (exitInfo.length == 3) {
                 throw new WorldMapFormatException("Exit line"
-                      + " has too many colons.");
+                        + " has too many colons.");
             }
 
             String exitName = exitInfo[0];
@@ -848,6 +876,7 @@ public class WorldMap {
 
     /**
      * Creates a Tile from the given formatted string.
+     *
      * @param blockString a formatted string describing the starting blocks on
      *                    the Tile to be created
      * @return a new Tile object based on the blockString
@@ -862,6 +891,7 @@ public class WorldMap {
 
     /**
      * Creates a block based on the required type provided.
+     *
      * @param blockType the type of block to be created
      * @return a new block of type blockType
      */
@@ -884,11 +914,12 @@ public class WorldMap {
 
     /**
      * Reset the WorldMap to a starting state.
-     * @param startingTile the starting tile
+     *
+     * @param startingTile  the starting tile
      * @param startPosition the position of the starting tile
-     * @param builder the builder
+     * @param builder       the builder
      * @throws WorldMapInconsistentException if tiles linked to the
-     *         startingTile are inconsistent
+     *                                       startingTile are inconsistent
      */
     private void reset(Tile startingTile, Position startPosition,
                        Builder builder)

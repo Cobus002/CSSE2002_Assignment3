@@ -2,6 +2,7 @@ package csse2002.block.world;
 
 /**
  * A grass block.
+ *
  * @serial exclude
  */
 public class GrassBlock extends GroundBlock {
@@ -9,6 +10,7 @@ public class GrassBlock extends GroundBlock {
     /**
      * Get the colour of a GrassBlock. <br>
      * Always returns "green"
+     *
      * @return "green"
      */
     @Override
@@ -19,6 +21,7 @@ public class GrassBlock extends GroundBlock {
     /**
      * Get the type of a GrassBlock. <br>
      * Always returns "grass"
+     *
      * @return "grass"
      */
     @Override
@@ -29,6 +32,7 @@ public class GrassBlock extends GroundBlock {
     /**
      * GrassBlocks are not carryable. <br>
      * Always returns false
+     *
      * @return false
      */
     @Override

@@ -1,4 +1,5 @@
 package csse2002.block.world;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -73,6 +74,7 @@ public class Controller {
      * easier since we don't have access to the already generated tileMap in
      * the sparseTileArray class(which would have been easy to implement with
      * to getter functions, see Piazza for my discussion).
+     *
      * @param startingTile
      * @param startingX
      * @param startingY
@@ -80,7 +82,7 @@ public class Controller {
      */
     private Map<Position, Tile> generateGameMapWithCoords(Tile startingTile,
                                                           int startingX,
-                                                          int startingY){
+                                                          int startingY) {
         //Resulting map
         Map<Position, Tile> resultMap = new LinkedHashMap<>();
         //Set up the Queue structure used in the breadth first search
@@ -93,25 +95,25 @@ public class Controller {
         toVisitMap.put(currPos, startingTile);
         toVisitQueue.add(currPos);
         /************* Start Breadth-First Search Algorithm ***************/
-        while(toVisitQueue.size()!=0){
+        while (toVisitQueue.size() != 0) {
             currPos = toVisitQueue.remove();
             tileAtPos = toVisitMap.get(currPos);
 
-            if(!visited.contains(currPos)){
+            if (!visited.contains(currPos)) {
                 //First visit
                 visited.add(currPos);
                 resultMap.put(currPos, tileAtPos);
-                exits=tileAtPos.getExits();
+                exits = tileAtPos.getExits();
                 Iterator dirIterator = DIRECTION_LIST.iterator();
                 int currPosX = currPos.getX();
                 int currPosY = currPos.getY();
-                while(dirIterator.hasNext()){
+                while (dirIterator.hasNext()) {
                     Position newPos = null;
-                    String direction = (String)dirIterator.next();
+                    String direction = (String) dirIterator.next();
 
-                    switch(direction){
+                    switch (direction) {
                         case NORTH:
-                            newPos = new Position(currPosX, currPosY-1);
+                            newPos = new Position(currPosX, currPosY - 1);
                             break;
                         case EAST:
                             newPos = new Position(currPosX + 1, currPosY);
@@ -123,7 +125,7 @@ public class Controller {
                             newPos = new Position(currPosX - 1, currPosY);
                             break;
                     }
-                    if(exits.containsKey(direction)){
+                    if (exits.containsKey(direction)) {
                         toVisitQueue.add(newPos);
                         toVisitMap.put(newPos, exits.get(direction));
                     }
@@ -138,12 +140,13 @@ public class Controller {
     }
 
     /**
-     * Draw the top tile in the world map of the tiles
+     * drawMap function is used to draw the map on the GridPane in the View
+     * class.
      */
     protected void drawMap() {
         Iterator mapIterator = gameMapWithCoords.entrySet().iterator();
-        Position shiftPosition = new Position(4-builderPos.getX(),
-                4-builderPos.getY());
+        Position shiftPosition = new Position(4 - builderPos.getX(),
+                4 - builderPos.getY());
         view.resetMapView();
         while (mapIterator.hasNext()) {
             Map.Entry pair = (Map.Entry) mapIterator.next();
@@ -152,11 +155,11 @@ public class Controller {
 
             try {
                 Position modifiedPos =
-                        new Position(currPos.getX()+shiftPosition.getX(),
-                                currPos.getY()+shiftPosition.getY());
+                        new Position(currPos.getX() + shiftPosition.getX(),
+                                currPos.getY() + shiftPosition.getY());
                 view.drawTileOnMap(modifiedPos, currTile,
-                        shiftPosition.getX()+builderPos.getX(),
-                        shiftPosition.getY()+builderPos.getY());
+                        shiftPosition.getX() + builderPos.getX(),
+                        shiftPosition.getY() + builderPos.getY());
             } catch (TooLowException e) {
                 System.out.println("TooLowException error");
             }
@@ -164,15 +167,15 @@ public class Controller {
         //Update the inventory label of the view
         int inventorySize = gameMap.getBuilder().getInventory().size();
         List<Block> inventoryList = gameMap.getBuilder().getInventory();
-        if(inventorySize==0){
+        if (inventorySize == 0) {
             view.setInventoryLabel("[ ]");
-        }else {
+        } else {
             String inventoryString = new String();
-            inventoryString+="[ ";
+            inventoryString += "[ ";
             int i = 0;
-            for( i = 0 ; i < inventorySize-1; i++){
-                inventoryString+=inventoryList.get(i).getBlockType();
-                inventoryString+=", ";
+            for (i = 0; i < inventorySize - 1; i++) {
+                inventoryString += inventoryList.get(i).getBlockType();
+                inventoryString += ", ";
             }
             inventoryString += inventoryList.get(i).getBlockType();
             inventoryString += " ]";
@@ -180,15 +183,19 @@ public class Controller {
         }
     }
 
-    /**
-     * EventHandler class which deals with user inputs no the buttons in the view
-     */
+
     private class GameHandler implements EventHandler<ActionEvent> {
+        /**
+         * The GameHandler class is used to handle all game
+         * EventHandler<ActionEvent> events. This is used to trigger the
+         * events on button presses.
+         */
 
         /**
          * own handle action function since the given Action class
          * processAction() function does not throw
          * any exceptions to use for processing
+         *
          * @param primaryAction
          * @param secondary
          * @throws NoExitException
@@ -198,58 +205,62 @@ public class Controller {
          */
         void handleAction(int primaryAction, String secondary) throws
                 NoExitException, TooHighException, InvalidBlockException,
-                TooLowException{
+                TooLowException {
 
-            if(primaryAction==Action.MOVE_BUILDER){
+            if (primaryAction == Action.MOVE_BUILDER) {
                 Tile moveTo =
                         gameMap.getBuilder().getCurrentTile().getExits().
                                 get(secondary);
                 gameMap.getBuilder().moveTo(moveTo);
-                switch (secondary){
+                switch (secondary) {
                     case "north":
                         builderPos = new Position(builderPos.getX(),
-                                builderPos.getY()-1);
+                                builderPos.getY() - 1);
                         break;
                     case "east":
-                        builderPos = new Position(builderPos.getX()+1,
+                        builderPos = new Position(builderPos.getX() + 1,
                                 builderPos.getY());
                         break;
                     case "south":
                         builderPos = new Position(builderPos.getX(),
-                                builderPos.getY()+1);
+                                builderPos.getY() + 1);
                         break;
                     case "west":
-                        builderPos = new Position(builderPos.getX()-1,
+                        builderPos = new Position(builderPos.getX() - 1,
                                 builderPos.getY());
                         break;
                 }
-            }else if(primaryAction == Action.MOVE_BLOCK){
+            } else if (primaryAction == Action.MOVE_BLOCK) {
                 gameMap.getBuilder().getCurrentTile().moveBlock(
                         secondary);
-            }else if(primaryAction == Action.DIG){
+            } else if (primaryAction == Action.DIG) {
                 gameMap.getBuilder().digOnCurrentTile();
-            }else if(primaryAction == Action.DROP){
+            } else if (primaryAction == Action.DROP) {
                 int index = Integer.parseInt(secondary);
                 gameMap.getBuilder().dropFromInventory(index);
             }
         }
 
+
+        /**
+         * handle event is used to handle all button press events
+         * @param event
+         */
         @Override
         public void handle(ActionEvent event) {
-
             /* Get the button which was just pressed */
             if (!gameActive) {
                 showWarning("Load map first");
                 return;
             }
-            if(actionType == null){
+            if (actionType == null) {
                 showWarning("Select action type with combobox");
                 return;
             }
-            int primaryAction = 99;
-            if(actionType.equals("block")){
+            int primaryAction;
+            if (actionType.equals("block")) {
                 primaryAction = Action.MOVE_BLOCK;
-            }else{
+            } else {
                 primaryAction = Action.MOVE_BUILDER;
             }
             Button pressedButton = (Button) event.getSource();
@@ -282,24 +293,20 @@ public class Controller {
                     handleAction(Action.DROP, view.getIndexTextFieldText());
                 }
                 drawMap();
-            } catch(Exception e){
+            } catch (Exception e) {
                 //NoExitException, TooHighException, InvalidBlockException,
                 //                TooLowException
-                if(e instanceof NoExitException){
+                if (e instanceof NoExitException) {
                     showWarning("NoExitException");
-                }else if(e instanceof TooHighException){
+                } else if (e instanceof TooHighException) {
                     showWarning("TooHighException");
-                }else if(e instanceof InvalidBlockException){
+                } else if (e instanceof InvalidBlockException) {
                     showWarning("InvalidBlockException");
-                }else if(e instanceof TooLowException){
+                } else if (e instanceof TooLowException) {
                     showWarning("TooLowException");
                 }
 
             }
-
-
-
-
 
 
         }
@@ -343,7 +350,7 @@ public class Controller {
                     builderPos = gameMap.getStartPosition();
                     gameMapWithCoords =
                             generateGameMapWithCoords(gameMap.getTile(builderPos),
-                            builderPos.getX(), builderPos.getY());
+                                    builderPos.getX(), builderPos.getY());
                     drawMap();
                 } catch (Exception e) {
                     //The file was not found
@@ -356,7 +363,7 @@ public class Controller {
                     } else if (e instanceof WorldMapInconsistentException) {
                         System.out.println("WorldMapInconsistent");
                         showWarning("WorldMapInconsistent error occurred");
-                    }else{
+                    } else {
                         showWarning("Other error occured");
                     }
                 }
@@ -365,7 +372,13 @@ public class Controller {
     }
 
     public class ActionsComboBoxHandler implements ChangeListener<String> {
-
+        /**
+         * the changed function is overriden so that when the combobox value
+         * is updated it sets the global actionType variable to the new value.
+         * @param observable
+         * @param oldValue
+         * @param newValue
+         */
         @Override
         public void changed(ObservableValue<? extends String> observable,
                             String oldValue, String newValue) {

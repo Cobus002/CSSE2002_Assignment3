@@ -10,6 +10,7 @@ import java.util.Map;
  * Manages an inventory of {@link Block Block}s <br>
  * Maintains a position in the map (by maintaining the current tile
  * that the Builder is on)
+ *
  * @serial exclude
  */
 public class Builder {
@@ -27,7 +28,9 @@ public class Builder {
      * Set the name of the Builder (such that getName() == name) and the
      * current tile to
      * startingTile (such that getCurrentTile() == startingTile).
-     * @param name name of the builder (returned by getName())- cannot be null
+     *
+     * @param name         name of the builder (returned by getName())-
+     *                     cannot be null
      * @param startingTile the tile the builder starts in - cannot be null
      */
     public Builder(String name, Tile startingTile) {
@@ -46,8 +49,10 @@ public class Builder {
      * i.e. getInventory() must contain the contents of startingInventory, but
      * modifying startingInventory after the Builder is constructed should not
      * change the result of getInventory().
-     * @param name name of the builder (returned by getName()) - cannot be null
-     * @param startingTile the tile the builder starts in - cannot be null
+     *
+     * @param name              name of the builder (returned by getName()) -
+     *                         cannot be null
+     * @param startingTile      the tile the builder starts in - cannot be null
      * @param startingInventory the starting inventory (blocks) - cannot be
      *                          null
      * @throws InvalidBlockException if for any Block (block) in
@@ -55,13 +60,13 @@ public class Builder {
      *                               block.isCarryable() == false
      */
     public Builder(String name, Tile startingTile,
-            List<Block> startingInventory) throws InvalidBlockException {
+                   List<Block> startingInventory) throws InvalidBlockException {
         this.name = name;
         currentTile = startingTile;
         contents = new LinkedList<Block>();
 
         // copy starting inventory into contents
-        for (Block block: startingInventory) {
+        for (Block block : startingInventory) {
             if (!block.isCarryable()) {
                 throw new InvalidBlockException();
             }
@@ -72,6 +77,7 @@ public class Builder {
 
     /**
      * Get the Builder's name.
+     *
      * @return the Builder's name
      */
     public String getName() {
@@ -80,6 +86,7 @@ public class Builder {
 
     /**
      * Get the current tile that the builder is on.
+     *
      * @return the current tile
      */
     public Tile getCurrentTile() {
@@ -88,6 +95,7 @@ public class Builder {
 
     /**
      * What is in the Builder's inventory.
+     *
      * @return blocks in the inventory
      */
     public List<Block> getInventory() {
@@ -113,13 +121,14 @@ public class Builder {
      * inventory block is a GroundBlock, throw a TooHighException
      * </ol>
      * Hint: call Tile.placeBlock, after checking the inventory
+     *
      * @param inventoryIndex the index in the inventory to place
      * @throws InvalidBlockException if the inventoryIndex is out of the
      *                               inventory range
-     * @throws TooHighException if there are 8 blocks on the current tile
-     *                          already, or if the block is an instance of
-     *                          GroundBlock and there are already 3 or more
-     *                          blocks on the current tile.
+     * @throws TooHighException      if there are 8 blocks on the current tile
+     *                               already, or if the block is an instance of
+     *                               GroundBlock and there are already 3 or more
+     *                               blocks on the current tile.
      */
     public void dropFromInventory(int inventoryIndex) throws
             InvalidBlockException, TooHighException {
@@ -144,14 +153,15 @@ public class Builder {
      * Handle the following cases:
      * <ol>
      * <li> If there are no blocks on the current tile, throw a TooLowException
-     *</li>
+     * </li>
      * <li> If the top block is not diggable, throw a InvalidBlockException
-     *</li>
+     * </li>
      * <li> If the top block is not carryable, remove the block, but do not
      * add it to the inventory. </li>
      * </ol>
      * Hint: call Tile.dig()
-     * @throws TooLowException if there are no blocks on the current tile.
+     *
+     * @throws TooLowException       if there are no blocks on the current tile.
      * @throws InvalidBlockException if the top block is not diggable
      */
     public void digOnCurrentTile() throws TooLowException,
@@ -178,6 +188,7 @@ public class Builder {
      * abs(current tile height - new tile) &lt;= 1) </li>
      * </ol>
      * If newTile is null return false.
+     *
      * @param newTile the tile to test if we can enter
      * @return true if the tile can be entered
      */
@@ -191,7 +202,7 @@ public class Builder {
         boolean heightsAreCompatible = false;
 
         for (Map.Entry<String,
-                       Tile> entry : currentTile.getExits().entrySet()) {
+                Tile> entry : currentTile.getExits().entrySet()) {
             if (entry.getValue() == newTile) {
                 tilesAreConnected = true;
                 break;
@@ -199,7 +210,7 @@ public class Builder {
         }
 
         if (Math.abs(newTile.getBlocks().size()
-                     - currentTile.getBlocks().size()) <= 1) {
+                - currentTile.getBlocks().size()) <= 1) {
             heightsAreCompatible = true;
         }
 
@@ -214,6 +225,7 @@ public class Builder {
      * to be newTile. (i.e. getCurrentTile() == newTile) <br>
      * If canEnter(newTile) == false then
      * throw a NoExitException.
+     *
      * @param newTile the tile to move to
      * @throws NoExitException if canEnter(newTile) == false
      */

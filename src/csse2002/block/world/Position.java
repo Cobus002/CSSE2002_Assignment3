@@ -5,6 +5,7 @@ import java.util.Objects;
 /**
  * Represents the position of a {@link Tile Tile}
  * in the {@link SparseTileArray SparseTileArray}.
+ *
  * @serial exclude
  */
 public class Position implements Comparable<Position> {
@@ -13,6 +14,7 @@ public class Position implements Comparable<Position> {
 
     /**
      * Construct a position for (x, y).
+     *
      * @param x the x coordinate
      * @param y the y coordinate
      */
@@ -23,6 +25,7 @@ public class Position implements Comparable<Position> {
 
     /**
      * Get the x coordinate.
+     *
      * @return the x coordinate
      */
     public int getX() {
@@ -31,6 +34,7 @@ public class Position implements Comparable<Position> {
 
     /**
      * Get the y coordinate.
+     *
      * @return the y coordinate
      */
     public int getY() {
@@ -44,13 +48,14 @@ public class Position implements Comparable<Position> {
      * https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html</a>) <br>
      * Two Positions are equal if {@literal getX() == other.getX() &&}
      * {@literal getY() == other.getY()}
+     *
      * @param obj the object to compare to
      * @return true if obj is an instance of Position and if obj.x == x and
-     *         obj.y == y.
+     * obj.y == y.
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof  Position)) {
+        if (!(obj instanceof Position)) {
             return false;
         }
         Position other = (Position) obj;
@@ -63,14 +68,13 @@ public class Position implements Comparable<Position> {
      * (see
      * <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html">
      * https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html</a>)
+     *
      * @return a suitable hashcode for the Position
      */
     //@Override
     //public int hashCode() {
     //    return x + y;
     //}
-
-
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
@@ -80,15 +84,16 @@ public class Position implements Comparable<Position> {
      * Compare this position to another position. <br>
      * return
      * <ul>
-     *     <li> {@literal -1 if getX() < other.getX()} </li>
-     *     <li> {@literal -1 if getX() == other.getX()
-     *          and getY() < other.getY()} </li>
-     *     <li> {@literal 0 if getX() == other.getX()
-     *          and getY() == other.getY()} </li>
-     *     <li> {@literal 1 if getX() > other.getX()} </li>
-     *     <li> {@literal 1 if getX() == other.getX()
-     *          and getY() > other.getY()} </li>
+     * <li> {@literal -1 if getX() < other.getX()} </li>
+     * <li> {@literal -1 if getX() == other.getX()
+     * and getY() < other.getY()} </li>
+     * <li> {@literal 0 if getX() == other.getX()
+     * and getY() == other.getY()} </li>
+     * <li> {@literal 1 if getX() > other.getX()} </li>
+     * <li> {@literal 1 if getX() == other.getX()
+     * and getY() > other.getY()} </li>
      * </ul>
+     *
      * @param other the other Position to compare to
      * @return -1, 0, or 1 depending on conditions above
      */
@@ -113,6 +118,7 @@ public class Position implements Comparable<Position> {
      * {@literal <x>} is the value returned by getX() and
      * {@literal <y>} is the value returned by getY(). <br>
      * Note the space following the comma.
+     *
      * @return a string representation of the position {@literal "(<x>, <y>)"}
      */
     @Override

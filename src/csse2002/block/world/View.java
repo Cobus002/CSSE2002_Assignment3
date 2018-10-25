@@ -1,4 +1,5 @@
 package csse2002.block.world;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -35,8 +36,6 @@ import java.util.Map;
  * <p>
  * This class creates the GUI view and has methods which can update to the
  * created view
- * 
- *
  */
 public class View {
 
@@ -95,16 +94,17 @@ public class View {
 
     /**
      * Get the Scene of the GUI with the scene graph
-     * 
+     *
      * @return the current scene
      */
     public Scene getScene() {
+
         return new Scene(rootBox);
     }
 
     /**
      * Get the number of buttons in the GUI
-     * 
+     *
      * @return the number of buttons
      */
     public int numberOfButtons() {
@@ -114,94 +114,108 @@ public class View {
     /**
      * Get the buttons array
      */
-    public Button[] getButtons(){
+    public Button[] getButtons() {
+
         return this.buttons;
     }
 
     /**
      * Get the north button
      */
-    public Button getNorthButton(){
+    public Button getNorthButton() {
         return this.buttons[NORTH_BTN_INDEX];
     }
 
     /**
      * Get the east button
      */
-    public Button getEastButton(){
+    public Button getEastButton() {
         return this.buttons[EAST_BTN_INDEX];
     }
 
     /**
      * Get the south button
      */
-    public Button getSouthButton(){
+    public Button getSouthButton() {
         return this.buttons[SOUTH_BTN_INDEX];
     }
 
     /**
      * Get the west button
      */
-    public Button getWestButton(){
+    public Button getWestButton() {
         return this.buttons[WEST_BTN_INDEX];
     }
 
-    public String getActionComboText(){
+    public String getActionComboText() {
         return this.actionSelectionBox.getId();
     }
+
     /**
      * Get the dig button instance
+     *
      * @return
      */
-    public Button getDigButton(){return this.buttons[DIG_BTN_INDEX];}
+    public Button getDigButton() {
+        return this.buttons[DIG_BTN_INDEX];
+    }
 
     /**
      * Get the drop button instance
+     *
      * @return
      */
-    public Button getDropButton(){return this.buttons[DROP_BTN_INDEX];}
+    public Button getDropButton() {
+        return this.buttons[DROP_BTN_INDEX];
+    }
+
     /**
      * Set the handler for the buttons
      */
-    public String getIndexTextFieldText(){
+    public String getIndexTextFieldText() {
         return this.indexSelectionTextField.getText();
     }
 
-    public void setInventoryLabel(String text){
+    public void setInventoryLabel(String text) {
         this.inventoryLabel.setText(text);
     }
 
-    public void addButtonHandler(EventHandler<ActionEvent> eventHandler){
-        for(Button currButton:buttons){
+    public void addButtonHandler(EventHandler<ActionEvent> eventHandler) {
+        for (Button currButton : buttons) {
             currButton.setOnAction(eventHandler);
         }
     }
 
     /**
      * Add the handler for the actionsCombobox
+     *
      * @param actionsComboBoxHandler
      */
-    public void addActionComboHandler(Controller.ActionsComboBoxHandler actionsComboBoxHandler) {
-        this.actionSelectionBox.valueProperty().addListener(actionsComboBoxHandler);
+    public void addActionComboHandler(
+            Controller.ActionsComboBoxHandler actionsComboBoxHandler) {
+        this.actionSelectionBox.valueProperty().
+                addListener(actionsComboBoxHandler);
     }
 
-    public MenuItem getLoadMenuItem(){
+    public MenuItem getLoadMenuItem() {
         return this.menuItems[LOAD_MENU_ITEM_INDEX];
     }
 
     /**
      * Get the dave menu item. Can be used to check what event caused event
      * handler to trigger
+     *
      * @return
      */
-    public MenuItem getSaveMenuItem(){
+    public MenuItem getSaveMenuItem() {
         return this.menuItems[SAVE_MENU_ITEM_INDEX];
     }
+
     /**
      * Add menu item handlers
      */
-    public void addMenuItemHandlers(EventHandler eventHandler){
-        for(MenuItem currItem: menuItems){
+    public void addMenuItemHandlers(EventHandler eventHandler) {
+        for (MenuItem currItem : menuItems) {
             currItem.setOnAction(eventHandler);
         }
     }
@@ -259,9 +273,8 @@ public class View {
 
     /**
      * Add all the Gui elements to the left container
-     * 
-     * @param box
-     *            the container to add the elements to
+     *
+     * @param box the container to add the elements to
      */
     private void addLeftSideComponents(VBox box) {
 
@@ -285,7 +298,8 @@ public class View {
 
         /* Create another HBox and add textInputs and Labels inside it */
         VBox inventoryBox = new VBox();
-        inventoryBox.setPadding(new Insets(10, 10, 10, 10));
+        inventoryBox.setPadding(new Insets(10, 10, 10,
+                10));
         inventoryBox.setSpacing(15);
         inventoryLabel = new Label("empty");
         inventoryBox.getChildren().addAll(new Label("Builder Inventory"),
@@ -297,9 +311,8 @@ public class View {
 
     /**
      * Add all the Gui elements to the right container
-     * 
-     * @param box
-     *            the container to add the elements to
+     *
+     * @param box the container to add the elements to
      */
     private void addRightSideComponents(VBox box) {
 
@@ -308,11 +321,10 @@ public class View {
         drawText.setFont(Font.font("Verdana", FontWeight.BOLD, 11));
         drawText.setFill(Color.WHITE);
         box.getChildren().add(drawText);
-
         BorderPane buttonLayout = new BorderPane();
         buttons = new Button[6]; // loop over this and add new Button to the
         int buttonCount = 0;
-        for(int i = 0; i<6; i++) {
+        for (int i = 0; i < 6; i++) {
             switch (buttonCount) {
                 case 0:
                     buttons[buttonCount] = new Button(NORTH_MSG);
@@ -330,7 +342,7 @@ public class View {
                     buttons[buttonCount] = new Button(DIG_MSG);
                     break;
                 case 5:
-                    buttons[buttonCount]= new Button(DROP_MSG);
+                    buttons[buttonCount] = new Button(DROP_MSG);
                     break;
             }
             buttonCount++;
@@ -346,18 +358,20 @@ public class View {
         buttonLayout.setAlignment(buttons[1], Pos.CENTER);
         buttonLayout.setAlignment(buttons[2], Pos.CENTER);
         buttonLayout.setAlignment(buttons[3], Pos.CENTER);
-        buttonLayout.setMargin(buttons[0], new Insets(10, 10, 10, 10));
-        buttonLayout.setMargin(buttons[1], new Insets(10, 10, 10, 10));
-        buttonLayout.setMargin(buttons[2], new Insets(10, 10, 10, 10));
-        buttonLayout.setMargin(buttons[3], new Insets(10, 10, 10, 10));
+        buttonLayout.setMargin(buttons[0], new Insets(10, 10,
+                10, 10));
+        buttonLayout.setMargin(buttons[1], new Insets(10, 10,
+                10, 10));
+        buttonLayout.setMargin(buttons[2], new Insets(10, 10,
+                10, 10));
+        buttonLayout.setMargin(buttons[3], new Insets(10, 10,
+                10, 10));
         buttons[0].setPrefWidth(80);
         buttons[1].setPrefWidth(80);
         buttons[2].setPrefWidth(80);
         buttons[3].setPrefWidth(80);
-
-
-        buttonLayout.setPadding(new Insets(10, 10, 10, 10));
-
+        buttonLayout.setPadding(new Insets(10, 10, 10,
+                10));
         //Add the button layout to the box
         box.getChildren().add(buttonLayout);
         //Add the combobox and the dig and drop buttons to the right
@@ -367,16 +381,16 @@ public class View {
         actionSelectionBox.getItems().addAll(BUILDER_ACTION_MSG,
                 BLOCK_ACTION_MSG);
         actionSelectionBox.setPrefWidth(80);
-
         buttonLayout.setCenter(actionSelectionBox);
-
+        //Layout to store the Drop button
         HBox buttonLayout3 = new HBox();
-        buttonLayout3.setPadding(new Insets(10, 10, 10, 10));
+        buttonLayout3.setPadding(new Insets(10, 10, 10,
+                10));
         buttonLayout3.setSpacing(15);
-
         HBox buttonLayout4 = new HBox();
         buttonLayout4.setAlignment(Pos.CENTER_LEFT);
-        buttonLayout4.setPadding(new Insets(10, 10, 10, 10));
+        buttonLayout4.setPadding(new Insets(10, 10, 10,
+                10));
         buttonLayout4.getChildren().add(buttons[DIG_BTN_INDEX]);
         indexSelectionTextField = new TextField();
         indexSelectionTextField.setPrefWidth(80);
@@ -389,13 +403,12 @@ public class View {
         buttons[4].setPrefWidth(80);
         buttons[5].setPrefWidth(80);
         //Add the inventory selection stuff to right side box
-
-
         box.getChildren().add(buttonLayout2);
     }
 
     /**
      * addRightArrowToGroup draws a right arrow on top of a group
+     *
      * @param group
      * @param startX
      * @param startY
@@ -403,11 +416,11 @@ public class View {
      * @param endY
      */
     private void addRightArrowToGroup(Group group, int startX, int startY,
-                                 int endX, int endY){
+                                      int endX, int endY) {
         //Create the lines
-        Line line1 = new Line(startX,startY, endX, endY);
-        Line line2 = new Line(startX+5, startY+10, endX, endY);
-        Line line3 = new Line(startX+5, startY-10, endX, endY);
+        Line line1 = new Line(startX, startY, endX, endY);
+        Line line2 = new Line(startX + 5, startY + 10, endX, endY);
+        Line line3 = new Line(startX + 5, startY - 10, endX, endY);
 
         line1.setStroke(Color.WHITE);
         line2.setStroke(Color.WHITE);
@@ -416,55 +429,101 @@ public class View {
         group.getChildren().addAll(line1, line2, line3);
     }
 
+    /**
+     * addLeftArrowToGroup function is used to add a left arrow to a Group
+     * object. Used to indicate valid exit east bound
+     *
+     * @param group
+     * @param startX
+     * @param startY
+     * @param endX
+     * @param endY
+     */
     private void addLeftArrowToGroup(Group group, int startX, int startY,
-                                      int endX, int endY){
+                                     int endX, int endY) {
         //Create the lines
-        Line line1 = new Line(startX,startY, endX, endY);
-        Line line2 = new Line(startX-5, startY+10, endX, endY);
-        Line line3 = new Line(startX-5, startY-10, endX, endY);
+        Line line1 = new Line(startX, startY, endX, endY);
+        Line line2 = new Line(startX - 5, startY + 10, endX, endY);
+        Line line3 = new Line(startX - 5, startY - 10, endX, endY);
         line1.setStroke(Color.WHITE);
         line2.setStroke(Color.WHITE);
         line3.setStroke(Color.WHITE);
         group.getChildren().addAll(line1, line2, line3);
     }
 
+    /**
+     * addUpArrowToGroup function is used to add up arrow to a Group object
+     * to indicate that there is a valid exit north bound.
+     *
+     * @param group
+     * @param startX
+     * @param startY
+     * @param endX
+     * @param endY
+     */
     private void addUpArrowToGroup(Group group, int startX, int startY,
-                                     int endX, int endY){
+                                   int endX, int endY) {
         //Create the lines
-        Line line1 = new Line(startX,startY, endX, endY);
-        Line line2 = new Line(startX-10, startY-5, endX, endY);
-        Line line3 = new Line(startX+10, startY-5, endX, endY);
+        Line line1 = new Line(startX, startY, endX, endY);
+        Line line2 = new Line(startX - 10, startY - 5, endX, endY);
+        Line line3 = new Line(startX + 10, startY - 5, endX, endY);
         line1.setStroke(Color.WHITE);
         line2.setStroke(Color.WHITE);
         line3.setStroke(Color.WHITE);
         group.getChildren().addAll(line1, line2, line3);
     }
 
+    /**
+     * addDownArrowToGroup function is used to add a down arrow to a Group
+     * object that is passed to it. Used to indicate valid exit south bound.
+     *
+     * @param group
+     * @param startX
+     * @param startY
+     * @param endX
+     * @param endY
+     */
     private void addDownArrowToGroup(Group group, int startX, int startY,
-                                     int endX, int endY){
+                                     int endX, int endY) {
         //Create the lines
-        Line line1 = new Line(startX,startY, endX, endY);
-        Line line2 = new Line(startX-10, startY+5, endX, endY);
-        Line line3 = new Line(startX+10, startY+5, endX, endY);
+        Line line1 = new Line(startX, startY, endX, endY);
+        Line line2 = new Line(startX - 10, startY + 5, endX, endY);
+        Line line3 = new Line(startX + 10, startY + 5, endX, endY);
         line1.setStroke(Color.WHITE);
         line2.setStroke(Color.WHITE);
         line3.setStroke(Color.WHITE);
         group.getChildren().addAll(line1, line2, line3);
     }
 
-    private void addTextToGroup(Group group, String text, int x, int y){
-        Text textLabel = new Text(x-5, y+5, text);
-        textLabel.setStroke(Color.WHITE);
+    /**
+     * addTextToGroup function is used to add text to a Group object that is
+     * passed to the function.
+     *
+     * @param group
+     * @param text
+     * @param x
+     * @param y
+     */
+    private void addTextToGroup(Group group, String text, int x, int y) {
+        Text textLabel = new Text(x - 5, y + 5, text);
+        textLabel.setStroke(Color.BLUEVIOLET);
         group.getChildren().add(textLabel);
 
     }
 
 
-    public void addRectangleToGroup(Group group, String colour){
+    /**
+     * addRectangleToGroup function is used to add a rectangle to a Group
+     * object that is passed in.
+     *
+     * @param group
+     * @param colour
+     */
+    private void addRectangleToGroup(Group group, String colour) {
 
-        Color rectColour=null;
+        Color rectColour = null;
 
-        switch (colour){
+        switch (colour) {
             case "green":
                 rectColour = Color.GREEN;
                 break;
@@ -490,11 +549,12 @@ public class View {
 
     /**
      * Add a circle to the group at position
+     *
      * @param group
      * @param x
      * @param y
      */
-    private void addCircleToGroup(Group group, int x, int y ){
+    private void addCircleToGroup(Group group, int x, int y) {
         Circle circle = new Circle();
         circle.setCenterX(x);
         circle.setCenterY(y);
@@ -505,64 +565,72 @@ public class View {
 
     /**
      * Draw the tile on the map view using position, tile and builder
+     *
      * @param pos
      * @param tile
      * @throws TooLowException
      */
-
     public void drawTileOnMap(Position pos, Tile tile, int builderX,
-                              int builderY) throws TooLowException{
+                              int builderY) throws TooLowException {
         Group blockGroup = new Group();
         try {
             Block topBlock = tile.getTopBlock();
             //Add the coloured rectangle for the block
             addRectangleToGroup(blockGroup, topBlock.getColour());
-        }catch (TooLowException e){
+        } catch (TooLowException e) {
+            //The tile is empty
             addRectangleToGroup(blockGroup, "white");
 
         }
-        
+
         Map<String, Tile> exitsMap = tile.getExits();
         Iterator it = exitsMap.entrySet().iterator();
 
-        while(it.hasNext()){
-            Map.Entry pair = (Map.Entry)it.next();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
             String exitDir = (String) pair.getKey();
-            switch (exitDir){
+            switch (exitDir) {
                 case "north":
-                    addUpArrowToGroup(blockGroup, 25, 10, 25, 0);
+                    addUpArrowToGroup(blockGroup, 25, 10,
+                            25, 0);
                     break;
                 case "south":
-                    addDownArrowToGroup(blockGroup, 25, 40, 25, 50);
+                    addDownArrowToGroup(blockGroup, 25, 40,
+                            25, 50);
                     break;
                 case "east":
-                    addRightArrowToGroup(blockGroup, 40, 25, 50, 25);
+                    addRightArrowToGroup(blockGroup, 40, 25,
+                            50, 25);
                     break;
                 case "west":
-                    addLeftArrowToGroup(blockGroup, 10, 25, 0, 25);
+                    addLeftArrowToGroup(blockGroup, 10, 25,
+                            0, 25);
                     break;
             }
         }
-        if((builderX==pos.getX())&&(builderY==pos.getY())){
+        if ((builderX == pos.getX()) && (builderY == pos.getY())) {
             //Add the builder as a circle to the tile
             addCircleToGroup(blockGroup, 40, 10);
         }
         addTextToGroup(blockGroup, Integer.toString(tile.getBlocks().size()),
                 25, 25);
-        worldMap.add(blockGroup, pos.getX()*BLOCK_WIDTH, pos.getY()*BLOCK_HEIGHT);
+        worldMap.add(blockGroup, pos.getX() * BLOCK_WIDTH,
+                pos.getY() * BLOCK_HEIGHT);
 
     }
 
 
-    public void resetMapView(){
+    /**
+     * Reset all the tiles back to
+     */
+    public void resetMapView() {
         int rows = 9;
-        int cols = 9;
-
         worldMap.getChildren().clear();
-        for(int i =0; i<rows; i++){
+        for (int i = 0; i < rows; i++) {
             Group emptyGroup = new Group();
             addRectangleToGroup(emptyGroup, "white");
-            worldMap.add(emptyGroup, i*BLOCK_WIDTH, i*BLOCK_HEIGHT);
+            worldMap.add(emptyGroup, i * BLOCK_WIDTH,
+                    i * BLOCK_HEIGHT);
 
         }
     }

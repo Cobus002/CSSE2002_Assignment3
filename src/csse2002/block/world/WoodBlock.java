@@ -2,12 +2,14 @@ package csse2002.block.world;
 
 /**
  * A wooden block or crate.
+ *
  * @serial exclude
  */
 public class WoodBlock implements Block {
     /**
      * Get the colour of a WoodBlock. <br>
      * Always returns "brown".
+     *
      * @return "brown"
      */
     @Override
@@ -18,6 +20,7 @@ public class WoodBlock implements Block {
     /**
      * Get the type of a WoodBlock. <br>
      * Always returns "wood".
+     *
      * @return "wood"
      */
     @Override
@@ -28,6 +31,7 @@ public class WoodBlock implements Block {
     /**
      * A woodblock is diggable. <br>
      * Always returns true.
+     *
      * @return true
      */
     @Override
@@ -38,6 +42,7 @@ public class WoodBlock implements Block {
     /**
      * A woodblock is carryable. <br>
      * Always returns true.
+     *
      * @return true
      */
     @Override
@@ -48,6 +53,7 @@ public class WoodBlock implements Block {
     /**
      * A woodblock is moveable. <br>
      * Always returns true.
+     *
      * @return true
      */
     @Override
